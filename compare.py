@@ -262,6 +262,12 @@ def main():
     p.add_argument("--only", default=None, help="run scenarios whose id contains this substring")
     p.add_argument("--skip-rag", action="store_true", help="run only the pearl side")
     p.add_argument("--skip-pearl", action="store_true", help="run only the RAG side")
+    p.add_argument(
+        "--pearl-extractor",
+        default=os.environ.get("LP_PEARL_EXTRACTOR", "llm"),
+        choices=["llm", "keyword"],
+        help="pearl feature-extraction mode (llm or fully-deterministic keyword)",
+    )
     args = p.parse_args()
 
     cfg = LLMConfig(provider=args.provider, model=args.model)
@@ -287,9 +293,15 @@ def main():
                 except Exception as e:
                     rag_runs.append({"error": str(e), "exemption": None})
             if not args.skip_pearl:
-                console.print(f"  pearl run {i+1}/{args.repeat}")
+                console.print(f"  pearl ({args.pearl_extractor}) run {i+1}/{args.repeat}")
                 try:
-                    pearl_runs.append(pearl_answer(ROOT / "scenarios" / f"{s.id}.json", cfg))
+                    pearl_runs.append(
+                        pearl_answer(
+                            ROOT / "scenarios" / f"{s.id}.json",
+                            cfg,
+                            extractor=args.pearl_extractor,
+                        )
+                    )
                 except Exception as e:
                     pearl_runs.append({"error": str(e), "exemption": None})
         summaries.append(summarize(s, rag_runs, pearl_runs))
@@ -298,8 +310,9 @@ def main():
     transcripts_dir = ROOT / "transcripts"
     transcripts_dir.mkdir(exist_ok=True)
     ts = time.strftime("%Y-%m-%d")
-    md_path = transcripts_dir / f"{ts}-{args.provider}.md"
-    json_path = transcripts_dir / f"{ts}-{args.provider}.manifest.json"
+    suffix = f"-{args.pearl_extractor}" if args.pearl_extractor != "llm" else ""
+    md_path = transcripts_dir / f"{ts}-{args.provider}{suffix}.md"
+    json_path = transcripts_dir / f"{ts}-{args.provider}{suffix}.manifest.json"
     md_path.write_text(render_transcript_md(summaries, manifest))
     json_path.write_text(json.dumps({"manifest": manifest, "summaries": summaries}, indent=2))
     console.print(f"\n[green]wrote[/] {md_path}")

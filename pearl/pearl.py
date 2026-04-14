@@ -139,22 +139,57 @@ def _pearl_cites(features: dict, rule_reasons: list | str) -> list[dict]:
     return cites
 
 
-def answer(scenario_path: Path, llm_cfg: LLMConfig) -> dict:
+def _compose_template_rationale(action: str, features: dict, cited: list[dict]) -> str:
+    """Deterministic, LLM-free rationale for keyword-mode pearl runs."""
+    if action == "releasable":
+        true_feats = [k for k, v in features.items() if v]
+        if not true_feats:
+            return (
+                "No feature in the pearl's schema was triggered by the record "
+                "description. The reviewed rules do not reach any exemption; "
+                "the record is releasable under FOIA's default presumption."
+            )
+        return (
+            f"The record triggered {len(true_feats)} feature(s) "
+            f"({', '.join(true_feats)}) but no exemption rule fires on this "
+            "combination. The reviewed rules treat partial elements of an "
+            "exemption as insufficient to withhold; the record is releasable."
+        )
+    cite_lines = "; ".join(c["cite"] for c in cited)
+    return (
+        f"The record is exempt under {action} because the features "
+        f"{', '.join(k for k, v in features.items() if v)} match the rule "
+        f"reviewed in the pearl. Authorities: {cite_lines}."
+    )
+
+
+def answer(scenario_path: Path, llm_cfg: LLMConfig, extractor: str = "llm") -> dict:
+    """Run the scenario through the pearl.
+
+    extractor:
+      "llm"     - use LLM tool-use to extract features (default, most robust)
+      "keyword" - use the deterministic keyword extractor (zero LLM calls)
+    """
     s = load_scenario(scenario_path)
-    llm = make_llm(llm_cfg)
-    tool = build_extract_tool()
 
     # Step 1: feature extraction.
     t0 = time.time()
-    try:
-        features = llm.chat_tool(
-            system=EXTRACT_SYSTEM,
-            user=s.description,
-            tool=tool,
-            temperature=0.0,
-        )
-    except Exception as e:
-        return {"error": "feature_extraction_failed", "detail": str(e)}
+    if extractor == "keyword":
+        from .keyword_extractor import extract_features as kw_extract
+
+        features = kw_extract(s.description, FD)
+    else:
+        llm = make_llm(llm_cfg)
+        tool = build_extract_tool()
+        try:
+            features = llm.chat_tool(
+                system=EXTRACT_SYSTEM,
+                user=s.description,
+                tool=tool,
+                temperature=0.0,
+            )
+        except Exception as e:
+            return {"error": "feature_extraction_failed", "detail": str(e)}
     t_extract = time.time() - t0
 
     # Validate feature shape; refuse if malformed rather than guess.
@@ -189,23 +224,31 @@ def answer(scenario_path: Path, llm_cfg: LLMConfig) -> dict:
     )
     cited = _pearl_cites(features, reasons)
 
-    # Step 3: LLM explanation. It CANNOT override the artifact's action.
-    explain_user = (
-        f"RECORD DESCRIPTION:\n{s.description}\n\n"
-        f"ARTIFACT ACTION: {action}\n"
-        f"ARTIFACT REASON: {json.dumps(reasons)}\n"
-        f"AUTHORITIES FROM ARTIFACT: {json.dumps(cited)}\n"
-    )
+    # Step 3: explanation. Template (deterministic) in keyword mode; LLM in
+    # llm mode. In both cases the action is fixed by the artifact.
     t2 = time.time()
-    try:
-        explained = llm.chat_json(
-            system=EXPLAIN_SYSTEM,
-            user=explain_user,
-            schema=EXPLAIN_SCHEMA,
-            temperature=0.0,
+    if extractor == "keyword":
+        explained = {
+            "rationale": _compose_template_rationale(action, features, cited),
+            "cited_authorities": cited,
+        }
+    else:
+        explain_user = (
+            f"RECORD DESCRIPTION:\n{s.description}\n\n"
+            f"ARTIFACT ACTION: {action}\n"
+            f"ARTIFACT REASON: {json.dumps(reasons)}\n"
+            f"AUTHORITIES FROM ARTIFACT: {json.dumps(cited)}\n"
         )
-    except Exception as e:
-        explained = {"rationale": f"(LLM explanation failed: {e})", "cited_authorities": cited}
+        try:
+            llm = make_llm(llm_cfg)
+            explained = llm.chat_json(
+                system=EXPLAIN_SYSTEM,
+                user=explain_user,
+                schema=EXPLAIN_SCHEMA,
+                temperature=0.0,
+            )
+        except Exception as e:
+            explained = {"rationale": f"(LLM explanation failed: {e})", "cited_authorities": cited}
     t_explain = time.time() - t2
 
     # Architectural rule: action/releasable/confidence come from the artifact.
@@ -231,9 +274,15 @@ def main():
     p.add_argument("scenario", type=Path)
     p.add_argument("--provider", default=os.environ.get("LP_LLM_PROVIDER", "openai"))
     p.add_argument("--model", default=os.environ.get("LP_LLM_MODEL", "gpt-4o"))
+    p.add_argument(
+        "--extractor",
+        default=os.environ.get("LP_PEARL_EXTRACTOR", "llm"),
+        choices=["llm", "keyword"],
+        help="LLM tool-use (default) or deterministic keyword match (no LLM)",
+    )
     args = p.parse_args()
     cfg = LLMConfig(provider=args.provider, model=args.model)
-    print(json.dumps(answer(args.scenario, cfg), indent=2))
+    print(json.dumps(answer(args.scenario, cfg, extractor=args.extractor), indent=2))
 
 
 if __name__ == "__main__":

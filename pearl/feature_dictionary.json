@@ -1,82 +1,106 @@
 {
   "classified_under_executive_order": {
     "label": "Classified under Executive Order",
-    "cite": "5 U.S.C. § 552(b)(1)"
+    "cite": "5 U.S.C. § 552(b)(1)",
+    "keywords": ["classified", "top secret", "confidential", "executive order", "e.o.", " eo "]
   },
   "classification_still_in_force": {
     "label": "Classification still in force",
-    "cite": "5 U.S.C. § 552(b)(1)"
+    "cite": "5 U.S.C. § 552(b)(1)",
+    "keywords": ["properly classified", "currently classified", "classification is in force", "still in force", "classification currently", "currently in force"],
+    "negative_keywords": ["declassified", "no longer classified", "automatically declassified"]
   },
   "purely_internal_personnel_rule": {
     "label": "Purely internal personnel rule or practice",
-    "cite": "5 U.S.C. § 552(b)(2)"
+    "cite": "5 U.S.C. § 552(b)(2)",
+    "keywords": ["internal personnel rule", "internal personnel practice", "purely internal", "internal agency rule", "personnel practice"]
   },
   "exempt_by_other_statute": {
     "label": "Specifically exempted by another statute",
-    "cite": "5 U.S.C. § 552(b)(3)"
+    "cite": "5 U.S.C. § 552(b)(3)",
+    "keywords": ["specifically exempted", "exempted by statute", "prohibited by statute", "non-discretionary statute", "section 6103", "26 u.s.c."]
   },
   "trade_secret_or_commercial_confidential": {
     "label": "Trade secret or confidential commercial information",
-    "cite": "5 U.S.C. § 552(b)(4)"
+    "cite": "5 U.S.C. § 552(b)(4)",
+    "keywords": ["trade secret", "confidential commercial", "commercial or financial", "proprietary formula", "confidential and proprietary"]
   },
   "commercial_info_voluntarily_submitted": {
     "label": "Commercial information voluntarily submitted",
-    "cite": "5 U.S.C. § 552(b)(4)"
+    "cite": "5 U.S.C. § 552(b)(4)",
+    "keywords": ["voluntarily submitted"]
   },
   "inter_or_intra_agency_memo": {
     "label": "Inter-agency or intra-agency memorandum",
-    "cite": "5 U.S.C. § 552(b)(5)"
+    "cite": "5 U.S.C. § 552(b)(5)",
+    "keywords": ["inter-agency memo", "intra-agency memo", "inter agency memo", "intra agency memo", "inter-agency transmittal", "intra-agency memorandum", "inter-agency letter", "intra-agency letter"]
   },
   "pre_decisional_deliberative": {
     "label": "Pre-decisional and deliberative",
-    "cite": "5 U.S.C. § 552(b)(5)"
+    "cite": "5 U.S.C. § 552(b)(5)",
+    "keywords": ["pre-decisional", "predecisional", "deliberative opinions", "draft memo", "draft — predecisional", "deliberative process"],
+    "negative_keywords": ["not pre-decisional", "not predecisional"]
   },
   "attorney_work_product_or_privileged": {
     "label": "Attorney work product or privileged communication",
-    "cite": "5 U.S.C. § 552(b)(5)"
+    "cite": "5 U.S.C. § 552(b)(5)",
+    "keywords": ["attorney work product", "attorney-client privilege", "privileged communication", "privileged attorney"],
+    "negative_keywords": ["not privileged"]
   },
   "personnel_medical_or_similar_file": {
     "label": "Personnel, medical, or similar file",
-    "cite": "5 U.S.C. § 552(b)(6)"
+    "cite": "5 U.S.C. § 552(b)(6)",
+    "keywords": ["personnel file", "personnel record", "medical file", "medical record", "employee file", "medical leave"]
   },
   "unwarranted_privacy_invasion": {
     "label": "Clearly unwarranted invasion of personal privacy",
-    "cite": "5 U.S.C. § 552(b)(6)"
+    "cite": "5 U.S.C. § 552(b)(6)",
+    "keywords": ["unwarranted invasion", "invasion of personal privacy", "invasion of privacy", "personal phone number", "home address"],
+    "negative_keywords": ["no unwarranted invasion", "would not constitute an unwarranted"]
   },
   "law_enforcement_record": {
     "label": "Compiled for law enforcement purposes",
-    "cite": "5 U.S.C. § 552(b)(7)"
+    "cite": "5 U.S.C. § 552(b)(7)",
+    "keywords": ["law enforcement", "criminal investigation", "investigative file", "fbi", "compiled during an investigation"]
   },
   "law_enforcement_harm_proceedings": {
     "label": "Could reasonably be expected to interfere with enforcement proceedings",
-    "cite": "5 U.S.C. § 552(b)(7)(A)"
+    "cite": "5 U.S.C. § 552(b)(7)(A)",
+    "keywords": ["active criminal investigation", "active investigation", "ongoing proceedings", "interfere with proceedings", "active proceedings"]
   },
   "law_enforcement_harm_privacy": {
     "label": "Could reasonably be expected to constitute an unwarranted invasion of personal privacy",
-    "cite": "5 U.S.C. § 552(b)(7)(C)"
+    "cite": "5 U.S.C. § 552(b)(7)(C)",
+    "keywords": ["privacy interest in law enforcement", "law enforcement privacy"]
   },
   "law_enforcement_harm_source": {
     "label": "Could reasonably be expected to disclose the identity of a confidential source",
-    "cite": "5 U.S.C. § 552(b)(7)(D)"
+    "cite": "5 U.S.C. § 552(b)(7)(D)",
+    "keywords": ["confidential source", "confidential informant", "cooperating witness", "identity of an informant"]
   },
   "law_enforcement_harm_techniques": {
     "label": "Would disclose techniques, procedures, or guidelines for law enforcement investigations or prosecutions",
-    "cite": "5 U.S.C. § 552(b)(7)(E)"
+    "cite": "5 U.S.C. § 552(b)(7)(E)",
+    "keywords": ["investigative techniques", "investigative procedures", "law enforcement techniques", "techniques and procedures", "disclose techniques"]
   },
   "law_enforcement_harm_life_safety": {
     "label": "Could reasonably be expected to endanger the life or physical safety of any individual",
-    "cite": "5 U.S.C. § 552(b)(7)(F)"
+    "cite": "5 U.S.C. § 552(b)(7)(F)",
+    "keywords": ["endanger life", "physical safety", "endanger the safety"]
   },
   "financial_institution_examination_report": {
     "label": "Financial institution examination, operating, or condition report",
-    "cite": "5 U.S.C. § 552(b)(8)"
+    "cite": "5 U.S.C. § 552(b)(8)",
+    "keywords": ["bank examination", "examination report", "financial institution examination", "occ report", "bank exam"]
   },
   "geological_well_data": {
     "label": "Geological and geophysical information and data concerning wells",
-    "cite": "5 U.S.C. § 552(b)(9)"
+    "cite": "5 U.S.C. § 552(b)(9)",
+    "keywords": ["geological", "geophysical", "well data", "oil well", "subsurface"]
   },
   "record_is_otherwise_public": {
     "label": "Record is already in the public domain",
-    "cite": "DOJ FOIA Guide, Procedural Requirements"
+    "cite": "DOJ FOIA Guide, Procedural Requirements",
+    "keywords": ["already public", "publicly available", "public domain", "published", "public website", "already posted", "made publicly available"]
   }
 }
