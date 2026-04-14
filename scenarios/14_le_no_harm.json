@@ -1,0 +1,11 @@
+{
+  "id": "14_le_no_harm",
+  "description": "A one-page agency memo compiled during a completed federal law enforcement investigation into a low-level trespassing incident that was resolved without charges. The memo was compiled for law enforcement purposes, but the agency acknowledges that its disclosure would not interfere with any proceeding, would not invade any individual's personal privacy, would not reveal a confidential source, would not disclose techniques or procedures, and would not endanger life or safety. None of the six specific harms listed in 5 U.S.C. § 552(b)(7)(A)\u2013(F) are implicated.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": ["law enforcement", "no harm"],
+    "expected_authority": "5 U.S.C. § 552(b)(7)"
+  },
+  "category": "borderline"
+}

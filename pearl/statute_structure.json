@@ -103,5 +103,40 @@
         "quote": "geological and geophysical information and data, including maps, concerning wells"
       }
     ]
+  },
+  "releasable_patterns": {
+    "_comment": [
+      "Statute-grounded 'inverse' patterns. Each entry teaches the pearl that",
+      "when named features are TRUE alone, the exemption's co-requirement is",
+      "absent and the record is releasable. Each pattern cites a verbatim",
+      "quote from the statute showing the co-requirement its absence makes",
+      "releasable. The quote-verification test applies here too."
+    ],
+    "patterns": [
+      {
+        "features": ["classified_under_executive_order"],
+        "cite": "5 U.S.C. § 552(b)(1)",
+        "description": "Classified under an Executive Order but the classification is not currently in force",
+        "quote": "are in fact properly classified pursuant to such Executive order"
+      },
+      {
+        "features": ["inter_or_intra_agency_memo"],
+        "cite": "5 U.S.C. § 552(b)(5)",
+        "description": "Inter/intra-agency memo that is neither pre-decisional/deliberative nor privileged",
+        "quote": "inter- agency or intra- agency memorandums or letters that would not be available by law"
+      },
+      {
+        "features": ["personnel_medical_or_similar_file"],
+        "cite": "5 U.S.C. § 552(b)(6)",
+        "description": "Personnel/medical/similar file whose disclosure does not constitute an unwarranted invasion of personal privacy",
+        "quote": "disclosure of which would constitute a clearly unwarranted invasion of personal privacy"
+      },
+      {
+        "features": ["law_enforcement_record"],
+        "cite": "5 U.S.C. § 552(b)(7)",
+        "description": "Law enforcement record whose production would not cause any of the six (A)-(F) harms",
+        "quote": "records or information compiled for law enforcement purposes, but only to the extent that the production of such law enforcement records or information"
+      }
+    ]
   }
 }

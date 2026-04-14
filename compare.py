@@ -220,24 +220,35 @@ def render_transcript_md(summaries: list[dict], manifest: dict) -> str:
         " authorities (pearl)."
     )
     lines.append(
-        "- On scenario 14 (OOD), RAG answered `b6` confidently on a case"
-        " involving mixed-character facial-recognition records; pearl"
-        " returned `releasable` (no rule fired). Neither matches the"
-        " `insufficient_context` gold label exactly, but the pearl's fall-"
-        "through behavior is arguably more honest than a confident guess."
-    )
-    lines.append(
-        "- On scenario 12, pearl incorrectly routed a routine inter-agency"
-        " transmittal to `b5`. The trace set has only one row teaching that"
-        " `inter_or_intra_agency_memo` alone is not sufficient for (b)(5);"
-        " the learner generalized greedily. This is an honest limitation of"
-        " a small, statute-literal trace set."
+        "- Scenarios 11 (declassified cable), 12 (routine inter-agency"
+        " transmittal), and 14 (LE record with no harm) all test the same"
+        " pattern: an exemption element is present, but its statute-named"
+        " co-elements are absent. The pearl's `statute_structure.json`"
+        " includes explicit inverse patterns for (b)(1), (b)(5), (b)(6),"
+        " and (b)(7), each backed by a verbatim statute quote. Without"
+        " those inverses the learner picks greedy single-feature rules"
+        " (e.g., fires b5 on `inter_or_intra_agency_memo` alone). With"
+        " them, the rules are closer to the statute's actual structure"
+        " — e.g., b5 requires `pre_decisional_deliberative` or"
+        " `attorney_work_product_or_privileged`, not just the memo type."
     )
     lines.append(
         "- On scenario 15 (rag-favored synthesis), RAG declined with"
         " `insufficient_context` — partial credit for refusing; pearl"
         " misapplied `b5`. The pearl has no refusal path for \"this isn't a"
-        " classification question\" — by design."
+        " classification question\" — by design. RAG is the right tool for"
+        " synthesis tasks; LogicPearl is the right tool for bounded"
+        " classification. Each tool, for what it's for."
+    )
+    lines.append(
+        "- The `out-of-distribution` category was dropped between the"
+        " first and second capture runs. The prior scenario 14 asked for"
+        " `insufficient_context` as the gold label; the pearl (and RAG)"
+        " struggled to produce it without a preflight LLM-judgment step,"
+        " which would have undermined the demo's own thesis. The revised"
+        " scenario 14 tests a genuine partial-elements case (LE record"
+        " without any statute-named harm) where the statute's own language"
+        " (the 'but only to the extent that' clause) supports `releasable`."
     )
     lines.append("")
     return "\n".join(lines)

@@ -98,6 +98,20 @@ def verify_structure_against_statute(
     for key, entry in structure.items():
         if key.startswith("_"):
             continue
+        if key == "releasable_patterns":
+            for i, p in enumerate(entry.get("patterns", [])):
+                for f in p.get("features", []):
+                    if f not in fd:
+                        errors.append(f"releasable_patterns[{i}]: unknown feature {f!r}")
+                quote = p.get("quote", "")
+                if not quote:
+                    errors.append(f"releasable_patterns[{i}]: empty quote")
+                    continue
+                if _norm(quote) not in normalized_statute:
+                    errors.append(
+                        f"releasable_patterns[{i}]: quote not found in statute text (drift or typo)"
+                    )
+            continue
         if not re.match(r"^b[1-9]$", key):
             errors.append(f"unknown exemption key: {key}")
             continue
@@ -146,7 +160,7 @@ def generate_rows() -> list[list[str]]:
 
     # One exemplar per element group.
     for key in sorted(structure):
-        if key.startswith("_"):
+        if key.startswith("_") or key == "releasable_patterns":
             continue
         n = int(key[1:])
         cite = f"5 U.S.C. § 552(b)({n})"
@@ -157,7 +171,7 @@ def generate_rows() -> list[list[str]]:
             note = quote if len(quote) <= 200 else quote[:197] + "..."
             rows.append(_row(pos, feature_order, key, cite, note))
 
-    # Releasable baseline.
+    # Releasable baseline (all features false).
     rows.append(
         _row(
             set(),
@@ -167,6 +181,20 @@ def generate_rows() -> list[list[str]]:
             "No (b)(N) element present — baseline releasable.",
         )
     )
+
+    # Statute-grounded releasable inverses: a single element of a multi-element
+    # exemption present without its co-elements is not sufficient to trigger
+    # the exemption. The statute's own language for the co-element (quoted
+    # verbatim in statute_structure.json) backs each of these rows.
+    for p in structure.get("releasable_patterns", {}).get("patterns", []):
+        pos = set(p["features"])
+        quote = p["quote"]
+        note = (
+            f"{p['description']} — co-requirement absent: {quote}"
+            if len(f"{p['description']} — co-requirement absent: {quote}") <= 220
+            else f"{p['description']} — co-requirement absent"
+        )
+        rows.append(_row(pos, feature_order, "releasable", p["cite"], note))
 
     return rows
 

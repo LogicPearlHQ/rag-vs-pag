@@ -37,3 +37,28 @@ def test_run_pearl_routes_releasable_when_all_false():
     out = run_pearl(features)
     action = out.get("action") or out.get("decision")
     assert action == "releasable", out
+
+
+@pytest.mark.skipif(
+    not (Path(__file__).parent.parent / "pearl" / "artifact").exists(),
+    reason="artifact not built — run `make build`",
+)
+def test_engine_reports_defaulted_when_no_rule_fires():
+    """The refusal pathway relies on the engine's `defaulted` flag."""
+    features = {k: False for k in FD}
+    out = run_pearl(features)
+    assert out.get("defaulted") is True, out
+    assert out.get("selected_rules") == [], out
+
+
+@pytest.mark.skipif(
+    not (Path(__file__).parent.parent / "pearl" / "artifact").exists(),
+    reason="artifact not built — run `make build`",
+)
+def test_engine_reports_not_defaulted_when_rule_fires():
+    features = {k: False for k in FD}
+    features["inter_or_intra_agency_memo"] = True
+    features["pre_decisional_deliberative"] = True
+    out = run_pearl(features)
+    assert out.get("defaulted") is False, out
+    assert out.get("selected_rules"), out
