@@ -1,0 +1,82 @@
+{
+  "classified_under_executive_order": {
+    "label": "Classified under Executive Order",
+    "cite": "5 U.S.C. § 552(b)(1)"
+  },
+  "classification_still_in_force": {
+    "label": "Classification still in force",
+    "cite": "5 U.S.C. § 552(b)(1)"
+  },
+  "purely_internal_personnel_rule": {
+    "label": "Purely internal personnel rule or practice",
+    "cite": "5 U.S.C. § 552(b)(2)"
+  },
+  "exempt_by_other_statute": {
+    "label": "Specifically exempted by another statute",
+    "cite": "5 U.S.C. § 552(b)(3)"
+  },
+  "trade_secret_or_commercial_confidential": {
+    "label": "Trade secret or confidential commercial information",
+    "cite": "5 U.S.C. § 552(b)(4)"
+  },
+  "commercial_info_voluntarily_submitted": {
+    "label": "Commercial information voluntarily submitted",
+    "cite": "5 U.S.C. § 552(b)(4)"
+  },
+  "inter_or_intra_agency_memo": {
+    "label": "Inter-agency or intra-agency memorandum",
+    "cite": "5 U.S.C. § 552(b)(5)"
+  },
+  "pre_decisional_deliberative": {
+    "label": "Pre-decisional and deliberative",
+    "cite": "5 U.S.C. § 552(b)(5)"
+  },
+  "attorney_work_product_or_privileged": {
+    "label": "Attorney work product or privileged communication",
+    "cite": "5 U.S.C. § 552(b)(5)"
+  },
+  "personnel_medical_or_similar_file": {
+    "label": "Personnel, medical, or similar file",
+    "cite": "5 U.S.C. § 552(b)(6)"
+  },
+  "unwarranted_privacy_invasion": {
+    "label": "Clearly unwarranted invasion of personal privacy",
+    "cite": "5 U.S.C. § 552(b)(6)"
+  },
+  "law_enforcement_record": {
+    "label": "Compiled for law enforcement purposes",
+    "cite": "5 U.S.C. § 552(b)(7)"
+  },
+  "law_enforcement_harm_proceedings": {
+    "label": "Could reasonably be expected to interfere with enforcement proceedings",
+    "cite": "5 U.S.C. § 552(b)(7)(A)"
+  },
+  "law_enforcement_harm_privacy": {
+    "label": "Could reasonably be expected to constitute an unwarranted invasion of personal privacy",
+    "cite": "5 U.S.C. § 552(b)(7)(C)"
+  },
+  "law_enforcement_harm_source": {
+    "label": "Could reasonably be expected to disclose the identity of a confidential source",
+    "cite": "5 U.S.C. § 552(b)(7)(D)"
+  },
+  "law_enforcement_harm_techniques": {
+    "label": "Would disclose techniques, procedures, or guidelines for law enforcement investigations or prosecutions",
+    "cite": "5 U.S.C. § 552(b)(7)(E)"
+  },
+  "law_enforcement_harm_life_safety": {
+    "label": "Could reasonably be expected to endanger the life or physical safety of any individual",
+    "cite": "5 U.S.C. § 552(b)(7)(F)"
+  },
+  "financial_institution_examination_report": {
+    "label": "Financial institution examination, operating, or condition report",
+    "cite": "5 U.S.C. § 552(b)(8)"
+  },
+  "geological_well_data": {
+    "label": "Geological and geophysical information and data concerning wells",
+    "cite": "5 U.S.C. § 552(b)(9)"
+  },
+  "record_is_otherwise_public": {
+    "label": "Record is already in the public domain",
+    "cite": "DOJ FOIA Guide, Procedural Requirements"
+  }
+}

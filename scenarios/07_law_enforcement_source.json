@@ -1,0 +1,11 @@
+{
+  "id": "07_law_enforcement_source",
+  "description": "An FBI investigative file compiled during an active criminal investigation. It contains the identity of a confidential informant whose cooperation was provided on a confidential basis.",
+  "expected": {
+    "exemption": "b7",
+    "releasable": false,
+    "rationale_keywords": ["law enforcement", "confidential source"],
+    "expected_authority": "5 U.S.C. § 552(b)(7)(D)"
+  },
+  "category": "clear-cut"
+}

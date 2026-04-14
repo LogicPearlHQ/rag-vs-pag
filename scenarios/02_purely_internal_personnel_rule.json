@@ -1,0 +1,11 @@
+{
+  "id": "02_purely_internal_personnel_rule",
+  "description": "A one-page internal agency rulebook describing the procedure staff must follow to request a parking placard for the agency garage. Solely an internal personnel practice.",
+  "expected": {
+    "exemption": "b2",
+    "releasable": false,
+    "rationale_keywords": ["internal personnel"],
+    "expected_authority": "5 U.S.C. § 552(b)(2)"
+  },
+  "category": "clear-cut"
+}

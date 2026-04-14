@@ -1,0 +1,11 @@
+{
+  "id": "12_borderline_routine_memo",
+  "description": "An inter-agency transmittal letter — from one agency to another — attaching a report that was finalized and published. The transmittal letter itself contains only routine administrative instructions for handling the attached (already-public) report. It is not pre-decisional and not privileged.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": ["routine", "not pre-decisional"],
+    "expected_authority": "5 U.S.C. § 552(b)(5)"
+  },
+  "category": "borderline"
+}

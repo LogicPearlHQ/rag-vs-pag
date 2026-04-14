@@ -1,0 +1,11 @@
+{
+  "id": "01_classified_memo",
+  "description": "An inter-agency memo classified TOP SECRET under Executive Order 13526 discussing active foreign intelligence operations. Classification is currently in force.",
+  "expected": {
+    "exemption": "b1",
+    "releasable": false,
+    "rationale_keywords": ["classified", "executive order"],
+    "expected_authority": "5 U.S.C. § 552(b)(1)"
+  },
+  "category": "clear-cut"
+}

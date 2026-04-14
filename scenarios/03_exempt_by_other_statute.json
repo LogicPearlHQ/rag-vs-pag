@@ -1,0 +1,11 @@
+{
+  "id": "03_exempt_by_other_statute",
+  "description": "A tax return filed with the IRS. Disclosure is specifically prohibited by 26 U.S.C. § 6103, a non-discretionary statute cited in the OPEN FOIA Act of 2009.",
+  "expected": {
+    "exemption": "b3",
+    "releasable": false,
+    "rationale_keywords": ["exempted", "statute"],
+    "expected_authority": "5 U.S.C. § 552(b)(3)"
+  },
+  "category": "clear-cut"
+}

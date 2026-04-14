@@ -1,0 +1,11 @@
+{
+  "id": "14_ood_novel_case",
+  "description": "A surveillance report about an agency's use of facial recognition technology in public parks, including a mixture of public reporting about the program and some internal operational notes. No explicit classification. No clear single exemption — this would require case-specific balancing under (b)(6) or (b)(7)(C).",
+  "expected": {
+    "exemption": "insufficient_context",
+    "releasable": false,
+    "rationale_keywords": ["insufficient", "balancing"],
+    "expected_authority": null
+  },
+  "category": "out-of-distribution"
+}

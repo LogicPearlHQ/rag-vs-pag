@@ -1,0 +1,11 @@
+{
+  "id": "15_rag_favored_synthesis",
+  "description": "In a single paragraph, summarize the legislative history of FOIA Exemption 5 and the two Supreme Court opinions most responsible for shaping its current scope.",
+  "expected": {
+    "exemption": "not_applicable",
+    "releasable": true,
+    "rationale_keywords": ["legislative", "history"],
+    "expected_authority": null
+  },
+  "category": "rag-favored"
+}

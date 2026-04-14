@@ -1,0 +1,11 @@
+{
+  "id": "test01",
+  "description": "A pre-decisional intra-agency draft memo.",
+  "expected": {
+    "exemption": "b5",
+    "releasable": false,
+    "rationale_keywords": ["pre-decisional", "deliberative"],
+    "expected_authority": "5 U.S.C. § 552(b)(5)"
+  },
+  "category": "clear-cut"
+}

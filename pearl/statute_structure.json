@@ -1,0 +1,107 @@
+{
+  "_comment": [
+    "Element groups for each exemption under 5 U.S.C. § 552(b).",
+    "An exemption applies when all features in ANY ONE of its groups are TRUE.",
+    "Each group carries a VERBATIM QUOTE from the statute; a test asserts the",
+    "quote appears as a substring of the fetched corpus (after whitespace",
+    "normalization). If the quote drifts from the statute, the test fails.",
+    "The reviewer's audit is: read each quote and confirm the named features",
+    "fairly summarize the elements named in that quote."
+  ],
+  "b1": {
+    "groups": [
+      {
+        "features": ["classified_under_executive_order", "classification_still_in_force"],
+        "quote": "(A) specifically authorized under criteria established by an Executive order to be kept secret in the interest of national defense or foreign policy and (B) are in fact properly classified pursuant to such Executive order"
+      }
+    ]
+  },
+  "b2": {
+    "groups": [
+      {
+        "features": ["purely_internal_personnel_rule"],
+        "quote": "related solely to the internal personnel rules and practices of an agency"
+      }
+    ]
+  },
+  "b3": {
+    "groups": [
+      {
+        "features": ["exempt_by_other_statute"],
+        "quote": "specifically exempted from disclosure by statute"
+      }
+    ]
+  },
+  "b4": {
+    "groups": [
+      {
+        "features": ["trade_secret_or_commercial_confidential"],
+        "quote": "trade secrets and commercial or financial information obtained from a person and privileged or confidential"
+      },
+      {
+        "features": ["commercial_info_voluntarily_submitted", "trade_secret_or_commercial_confidential"],
+        "quote": "commercial or financial information obtained from a person and privileged or confidential"
+      }
+    ]
+  },
+  "b5": {
+    "groups": [
+      {
+        "features": ["inter_or_intra_agency_memo", "pre_decisional_deliberative"],
+        "quote": "inter- agency or intra- agency memorandums or letters that would not be available by law to a party other than an agency in litigation with the agency"
+      },
+      {
+        "features": ["inter_or_intra_agency_memo", "attorney_work_product_or_privileged"],
+        "quote": "inter- agency or intra- agency memorandums or letters that would not be available by law to a party other than an agency in litigation with the agency"
+      }
+    ]
+  },
+  "b6": {
+    "groups": [
+      {
+        "features": ["personnel_medical_or_similar_file", "unwarranted_privacy_invasion"],
+        "quote": "personnel and medical files and similar files the disclosure of which would constitute a clearly unwarranted invasion of personal privacy"
+      }
+    ]
+  },
+  "b7": {
+    "groups": [
+      {
+        "features": ["law_enforcement_record", "law_enforcement_harm_proceedings"],
+        "quote": "records or information compiled for law enforcement purposes"
+      },
+      {
+        "features": ["law_enforcement_record", "law_enforcement_harm_privacy"],
+        "quote": "records or information compiled for law enforcement purposes"
+      },
+      {
+        "features": ["law_enforcement_record", "law_enforcement_harm_source"],
+        "quote": "records or information compiled for law enforcement purposes"
+      },
+      {
+        "features": ["law_enforcement_record", "law_enforcement_harm_techniques"],
+        "quote": "records or information compiled for law enforcement purposes"
+      },
+      {
+        "features": ["law_enforcement_record", "law_enforcement_harm_life_safety"],
+        "quote": "records or information compiled for law enforcement purposes"
+      }
+    ]
+  },
+  "b8": {
+    "groups": [
+      {
+        "features": ["financial_institution_examination_report"],
+        "quote": "contained in or related to examination, operating, or condition reports prepared by, on behalf of, or for the use of an agency responsible for the regulation or supervision of financial institutions"
+      }
+    ]
+  },
+  "b9": {
+    "groups": [
+      {
+        "features": ["geological_well_data"],
+        "quote": "geological and geophysical information and data, including maps, concerning wells"
+      }
+    ]
+  }
+}

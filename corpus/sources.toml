@@ -1,0 +1,126 @@
+# Shared corpus for both sides of the demo.
+#
+# All entries are fetched by corpus/fetch.py into corpus/raw/<id>.bin and
+# verified against sha256. Values of "TBD" are skipped on first fetch;
+# fetch.py writes the observed sha256 into corpus/raw/MANIFEST.json so the
+# operator can paste the pinned hashes back into this file.
+#
+# If a URL fails at fetch time and a corpus/snapshot/<id>.txt fallback
+# exists, fetch.py uses it. Otherwise the doc is skipped and the demo
+# continues with the remaining corpus.
+#
+# Licensing:
+#   - Federal works (statute, CFR, DOJ Guide) are public domain.
+#   - CourtListener opinions are public-domain court text redistributed
+#     under CourtListener's terms. See ATTRIBUTIONS.md.
+
+# ----- Statute ---------------------------------------------------------------
+
+[[documents]]
+id = "5_usc_552"
+kind = "statute"
+url = "https://www.law.cornell.edu/uscode/text/5/552"
+sha256 = "72af192b5f0ac7d338ab1b454b51348ab08b3d05bfdb194eea78360ebaf94d27"
+cite_root = "5 U.S.C. § 552"
+
+# ----- DOJ OIP Guide to the FOIA --------------------------------------------
+# The Guide is published per-chapter under https://www.justice.gov/oip/foia-guide
+# URLs below point to the HTML landing pages; fetch.py stores the rendered
+# HTML which pypdf-free chunking treats as text.
+
+[[documents]]
+id = "doj_guide_exemption_1"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption1.pdf"
+sha256 = "060b011474679e17a845041b9cc98b523c4f09e75529e2142482457422e0d9c1"
+cite_root = "DOJ FOIA Guide, Exemption 1"
+
+[[documents]]
+id = "doj_guide_exemption_2"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption2.pdf"
+sha256 = "41fe0c288cdfbeff4c00010191451069ce990465cef451c0d90421c78787bf5c"
+cite_root = "DOJ FOIA Guide, Exemption 2"
+
+[[documents]]
+id = "doj_guide_exemption_3"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption3.pdf"
+sha256 = "7e48c18dcbc849cd999558a33f3d6771ed4798ca7ed49346c8fce9089c00626d"
+cite_root = "DOJ FOIA Guide, Exemption 3"
+
+[[documents]]
+id = "doj_guide_exemption_4"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption4.pdf"
+sha256 = "db94dc9280924023b89d60f010723d32b5fa43ad5b6440e952d8f111fa844e48"
+cite_root = "DOJ FOIA Guide, Exemption 4"
+
+[[documents]]
+id = "doj_guide_exemption_5"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption5.pdf"
+sha256 = "b8236fbc199a9f1b5cff0411445db1103825797f233fe0c5feeeb276a2c5a43e"
+cite_root = "DOJ FOIA Guide, Exemption 5"
+
+[[documents]]
+id = "doj_guide_exemption_6"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption6.pdf"
+sha256 = "416d07707ec13d2f33028f8fc6ba4ba8c9f24f9b211361ff648773ecaf7a4c88"
+cite_root = "DOJ FOIA Guide, Exemption 6"
+
+[[documents]]
+id = "doj_guide_exemption_7"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption7.pdf"
+sha256 = "1d09aff21b5f5fc0f0c3a9259b5ab28543bd6e39c80b4a5edb6bf2d5a8d7390c"
+cite_root = "DOJ FOIA Guide, Exemption 7"
+
+[[documents]]
+id = "doj_guide_exemption_8"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption8.pdf"
+sha256 = "c4e71369eeb620cabf314d9aae56491103584a8a7ddd77e2df80398652710b6e"
+cite_root = "DOJ FOIA Guide, Exemption 8"
+
+[[documents]]
+id = "doj_guide_exemption_9"
+kind = "doj_guide"
+url = "https://www.justice.gov/oip/foia_guide09/exemption9.pdf"
+sha256 = "522d50e4095349f06201e6dc76cde246771932ce19393ded3ed0e46dde61c06b"
+cite_root = "DOJ FOIA Guide, Exemption 9"
+
+# ----- CFR -------------------------------------------------------------------
+
+[[documents]]
+id = "28_cfr_16"
+kind = "cfr"
+# eCFR's user-facing page is an SPA; the versioner API returns real XML.
+url = "https://www.ecfr.gov/api/versioner/v1/full/2024-01-01/title-28.xml?chapter=I&part=16"
+sha256 = "cbd9f9e79939d96c6f0edb73dd5d70e91b8df93eaa0a36f91efd14d17af8fec2"
+cite_root = "28 C.F.R. Part 16"
+
+# ----- Selected FOIA case opinions ------------------------------------------
+# CourtListener's REST API now requires authentication (401 without a token).
+# The landmark opinions below are public-domain court text; to enable this
+# part of the corpus, register at https://www.courtlistener.com and put
+# `COURTLISTENER_TOKEN=...` in .env, then add back entries like:
+#
+#   [[documents]]
+#   id = "nlrb_v_sears_roebuck"
+#   kind = "case"
+#   url = "https://www.courtlistener.com/api/rest/v4/clusters/108967/"
+#   sha256 = "TBD"
+#   cite_root = "NLRB v. Sears, Roebuck & Co., 421 U.S. 132 (1975)"
+#
+# Relevant landmark cases (omitted from the auto-fetched corpus until an
+# API token is available):
+#   - NLRB v. Sears, Roebuck & Co., 421 U.S. 132 (1975)       [b5]
+#   - Dep't of State v. Ray, 502 U.S. 164 (1991)              [b6]
+#   - DOJ v. Reporters Committee, 489 U.S. 749 (1989)         [b7(C)]
+#   - FBI v. Abramson, 456 U.S. 615 (1982)                    [b7]
+#   - Dep't of the Interior v. Klamath, 532 U.S. 1 (2001)     [b5]
+#
+# The demo remains fully functional on the statute + DOJ Guide + CFR
+# corpus; cases are optional depth.

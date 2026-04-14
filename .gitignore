@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+corpus/raw/
+pearl/artifact/
+rag/index/
+transcripts/*.json
+!transcripts/.gitkeep
+pearl/traces_logic.csv

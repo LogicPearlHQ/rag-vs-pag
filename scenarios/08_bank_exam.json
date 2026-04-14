@@ -1,0 +1,11 @@
+{
+  "id": "08_bank_exam",
+  "description": "A bank examination report prepared by the OCC for its supervisory use, assessing a national bank's capital adequacy and risk profile.",
+  "expected": {
+    "exemption": "b8",
+    "releasable": false,
+    "rationale_keywords": ["bank", "examination"],
+    "expected_authority": "5 U.S.C. § 552(b)(8)"
+  },
+  "category": "clear-cut"
+}

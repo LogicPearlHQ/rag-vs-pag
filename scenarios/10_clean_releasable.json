@@ -1,0 +1,11 @@
+{
+  "id": "10_clean_releasable",
+  "description": "An agency's published press release from last month announcing a routine community outreach event, already posted on the agency's public website.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": ["public", "releasable"],
+    "expected_authority": "5 U.S.C. § 552(a)"
+  },
+  "category": "clear-cut"
+}

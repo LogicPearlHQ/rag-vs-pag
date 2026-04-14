@@ -1,0 +1,11 @@
+{
+  "id": "11_borderline_declassified",
+  "description": "A State Department cable from 1985 previously classified SECRET. It was automatically declassified in 2010 pursuant to the 25-year declassification rule, and has been made publicly available in the State Department's FRUS volumes.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": ["declassified", "public"],
+    "expected_authority": "5 U.S.C. § 552(b)(1)"
+  },
+  "category": "borderline"
+}

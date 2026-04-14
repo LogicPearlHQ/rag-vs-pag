@@ -1,0 +1,11 @@
+{
+  "id": "09_geological_well_data",
+  "description": "A map of subsurface geological strata and geophysical sensor logs from private oil wells, filed with the Bureau of Land Management.",
+  "expected": {
+    "exemption": "b9",
+    "releasable": false,
+    "rationale_keywords": ["geological", "wells"],
+    "expected_authority": "5 U.S.C. § 552(b)(9)"
+  },
+  "category": "clear-cut"
+}

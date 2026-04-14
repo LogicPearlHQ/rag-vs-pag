@@ -1,0 +1,11 @@
+{
+  "id": "06_personnel_privacy",
+  "description": "Personnel files of career federal employees containing home addresses, personal phone numbers, and medical leave records. Release would constitute a clearly unwarranted invasion of personal privacy.",
+  "expected": {
+    "exemption": "b6",
+    "releasable": false,
+    "rationale_keywords": ["personnel", "privacy"],
+    "expected_authority": "5 U.S.C. § 552(b)(6)"
+  },
+  "category": "clear-cut"
+}

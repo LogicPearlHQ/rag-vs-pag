@@ -1,0 +1,11 @@
+{
+  "id": "05_predecisional_memo",
+  "description": "A draft intra-agency memo circulated among policy staff before a final rulemaking decision, recommending a policy direction. Stamped 'DRAFT — PREDECISIONAL'. The memo reflects deliberative opinions, not final positions.",
+  "expected": {
+    "exemption": "b5",
+    "releasable": false,
+    "rationale_keywords": ["pre-decisional", "deliberative"],
+    "expected_authority": "5 U.S.C. § 552(b)(5)"
+  },
+  "category": "clear-cut"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "13_borderline_personnel_roster",
+  "description": "A routine agency roster listing employee names and official work titles — no home addresses, no medical information, no unofficial details. Release of this roster would not constitute an unwarranted invasion of personal privacy.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": ["roster", "no unwarranted"],
+    "expected_authority": "5 U.S.C. § 552(b)(6)"
+  },
+  "category": "borderline"
+}
