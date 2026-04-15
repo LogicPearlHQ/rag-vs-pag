@@ -20,34 +20,56 @@ the value is being able to inspect the whole pipeline end-to-end, run it
 yourself, and swap in your own corpus and scenarios.
 
 Same model (gpt-4o, temp=0), same corpus (5 U.S.C. § 552 + DOJ OIP FOIA
-Guide + 28 C.F.R. Part 16), three backends. **72 scenarios × 3 reruns =
-216 runs per side:** 15 curated diagnostic scenarios + 57 case-derived
-scenarios auto-extracted from DOJ Guide parentheticals (every quote
-sha256-verified against the fetched PDF, 174 tests pass).
+Guide + 28 C.F.R. Part 16), **five** backends. **72 scenarios × 3
+reruns = 216 runs per side:** 15 curated diagnostic scenarios + 57
+case-derived scenarios auto-extracted from DOJ Guide parentheticals
+(every quote sha256-verified against the fetched PDF, 174 tests pass).
 
-| | RAG | PAG (LLM extract) | PAG (keyword extract) |
-|---|---|---|---|
-| Correct overall | 193/216 (89%) | 118/216 (55%) | 75/216 (35%) |
-| Correct on curated | 45/45 (100%) | 42/45 (93%) | 42/45 (93%) |
-| Correct on case-derived | 148/171 (87%) | 76/171 (44%) | 33/171 (19%) |
-| Byte-identical reruns | 115/216 | 119/216 | **216/216** |
-| **Citation faithfulness** | **235/405 (58%)** | **186/186 (100%)** | **129/129 (100%)** |
-| Fabricated citations | **170** | **0** | **0** |
-| LLM calls / scenario | 1 | 2 | 0 |
-| Avg latency | 3.7 s | 3.8 s | <1 ms |
-| Marginal cost / run | ~$0.01 | ~$0.005 | $0 |
+| | RAG | RAG-ChunkLookup | PAG | PAG-R | PAG-keyword |
+|---|---|---|---|---|---|
+| Correct overall | 89% | **88%** | 55% | 84% | 35% |
+| Correct (curated) | 100% | 100% | 93% | 96% | 93% |
+| Correct (case-derived) | 87% | 85% | 44% | 81% | 19% |
+| **Citation faithfulness** | **58%** | **100%** | 100% | 100% | 100% |
+| Fabricated citations | **170** | **0** | 0 | 0 | 0 |
+| Decision maker | LLM | LLM | Pearl | LLM | Pearl |
+| Excerpt source | LLM-written | Chunk lookup | Pearl dict | Pearl dict | Pearl dict |
+| LLM calls / scenario | 1 | 1 | 2 | 1 | 0 |
+| Avg latency | 3.7s | 3.7s | 3.8s | 3.7s | <1 ms |
+| Marginal cost / run | ~$0.01 | ~$0.01 | ~$0.005 | ~$0.01 | **$0** |
 
-**The separator sharpens at scale.** RAG's citation-fabrication rate
-gets *worse* with more scenarios — 170 cited excerpts out of 405 are
-not real substrings of the retrieved text, a 42% fabrication rate. PAG's
-100% is structural and doesn't degrade with N.
+**Honest top-line:** the citation-fabrication problem is fixed by a
+well-known architectural pattern — chunk-ID indirection, the pattern
+behind Anthropic Citations and Cohere's grounded generation. **RAG-
+ChunkLookup gets to 100% citation faithfulness with zero LogicPearl
+involvement** while keeping baseline RAG's correctness almost intact
+(88% vs 89%). If "real citations" is your only requirement and you're
+already shipping RAG, switch to chunk-ID indirection — you don't need a
+pearl for that.
 
-**PAG's correctness drops on case-derived scenarios** (44% vs 93% on
-curated). That's the honest limit of a statute-literal trace set: many
-case-derived scenarios turn on *case-law doctrine* the pearl doesn't
-encode (Klamath's consultant corollary, public-domain waiver, etc.).
-RAG wins correctness on these because it can retrieve the exact Guide
-passage — and then fabricates half its citations doing so.
+**Where LogicPearl is actually distinct:**
+
+1. **PAG is the only pipeline whose decision is provably deterministic.**
+   The other four have an LLM in the decision path; PAG's verdict is a
+   compiled rule evaluation in Rust. Same features in → same action out,
+   byte-identical, every time, no GPU floats.
+2. **PAG-keyword is the only path with no LLM at runtime at all.** $0
+   marginal cost per call, microsecond latency, runs offline. Matters
+   for high-volume classification and air-gap deployments.
+3. **The decision policy is inspectable.** `logicpearl inspect` prints
+   the rules; `logicpearl diff` shows what changed between artifact
+   versions. RAG's "decision" is whatever the LLM thought.
+4. **PAG-R hits 84% correctness with cites grounded in a 20-entry
+   dictionary** — interesting middle for systems that want a tightly-
+   reviewed cite vocabulary rather than arbitrary retrieval lookups.
+
+**What chunk-ID indirection does NOT fix** (and a critic should ask
+about): the LLM still writes the verdict and the rationale prose. It
+can pick a real chunk but write a rationale that mischaracterizes what
+the chunk says. The cite is real; the *interpretation* is still LLM.
+Only PAG (and PAG-keyword) make the verdict deterministic, and only
+PAG-keyword makes the entire output a deterministic function of the
+input.
 
 The RAG baseline is specifically: hybrid BM25 + dense embeddings
 (text-embedding-3-small), cross-encoder rerank (ms-marco-MiniLM-L-6-v2),
