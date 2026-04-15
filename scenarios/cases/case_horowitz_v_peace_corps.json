@@ -1,0 +1,19 @@
+{
+  "id": "case_horowitz_v_peace_corps",
+  "description": "A FOIA request seeks the following records: requested document where the decisonmaker's \"thought processes are woven into document to such an extent\" that any attempt at segregating out information would reveal agency deliberations.",
+  "expected": {
+    "exemption": "b5",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Horowitz v. Peace Corps",
+    "source_doc": "doj_guide_exemption_5",
+    "source_page": 28,
+    "record_description_quote": "requested document where the decisonmaker's \"thought processes are woven into document to such an extent\" that any attempt at segregating out information would reveal agency deliberations",
+    "outcome_quote": "protecting requested document where the decisonmaker's \"thought processes are woven into d",
+    "note": "auto-extracted from doj_guide_exemption_5 p.28 parenthetical"
+  }
+}

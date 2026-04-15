@@ -1,0 +1,19 @@
+{
+  "id": "case_center_for_national_security_studies_v_doj",
+  "description": "A FOIA request seeks the following records: the names of post-9/11 detainees, found on documents that traditionally have been public.",
+  "expected": {
+    "exemption": "b7",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Center for National Security Studies v. DOJ",
+    "source_doc": "doj_guide_exemption_7",
+    "source_page": 14,
+    "record_description_quote": "the names of post-9/11 detainees, found on documents that traditionally have been public",
+    "outcome_quote": "properly withheld",
+    "note": "Even records traditionally public can be (b)(7) when compiled for law-enforcement purpose pursuing a federal-law violation + national security breach."
+  }
+}

@@ -20,16 +20,34 @@ the value is being able to inspect the whole pipeline end-to-end, run it
 yourself, and swap in your own corpus and scenarios.
 
 Same model (gpt-4o, temp=0), same corpus (5 U.S.C. § 552 + DOJ OIP FOIA
-Guide + 28 C.F.R. Part 16), same scenarios, three backends.
+Guide + 28 C.F.R. Part 16), three backends. **72 scenarios × 3 reruns =
+216 runs per side:** 15 curated diagnostic scenarios + 57 case-derived
+scenarios auto-extracted from DOJ Guide parentheticals (every quote
+sha256-verified against the fetched PDF, 174 tests pass).
 
 | | RAG | PAG (LLM extract) | PAG (keyword extract) |
 |---|---|---|---|
-| Correct | 45/45 (100%) | 42/45 (93%) | 42/45 (93%) |
-| Byte-identical reruns | 25/45 | 20/45 | 45/45 |
-| **Citation faithfulness** | **70/94 (74%)** | **57/57 (100%)** | **72/72 (100%)** |
+| Correct overall | 193/216 (89%) | 118/216 (55%) | 75/216 (35%) |
+| Correct on curated | 45/45 (100%) | 42/45 (93%) | 42/45 (93%) |
+| Correct on case-derived | 148/171 (87%) | 76/171 (44%) | 33/171 (19%) |
+| Byte-identical reruns | 115/216 | 119/216 | **216/216** |
+| **Citation faithfulness** | **235/405 (58%)** | **186/186 (100%)** | **129/129 (100%)** |
+| Fabricated citations | **170** | **0** | **0** |
 | LLM calls / scenario | 1 | 2 | 0 |
-| Latency | 3.7 s | 3.8 s | <1 ms |
+| Avg latency | 3.7 s | 3.8 s | <1 ms |
 | Marginal cost / run | ~$0.01 | ~$0.005 | $0 |
+
+**The separator sharpens at scale.** RAG's citation-fabrication rate
+gets *worse* with more scenarios — 170 cited excerpts out of 405 are
+not real substrings of the retrieved text, a 42% fabrication rate. PAG's
+100% is structural and doesn't degrade with N.
+
+**PAG's correctness drops on case-derived scenarios** (44% vs 93% on
+curated). That's the honest limit of a statute-literal trace set: many
+case-derived scenarios turn on *case-law doctrine* the pearl doesn't
+encode (Klamath's consultant corollary, public-domain waiver, etc.).
+RAG wins correctness on these because it can retrieve the exact Guide
+passage — and then fabricates half its citations doing so.
 
 The RAG baseline is specifically: hybrid BM25 + dense embeddings
 (text-embedding-3-small), cross-encoder rerank (ms-marco-MiniLM-L-6-v2),
@@ -51,7 +69,7 @@ structural: citations come from a lookup table, one line of code. RAG's
 "Correct" and "citations are real" aren't the same question. A system
 can answer correctly with excerpts it made up.
 
-24 of RAG's 94 citations in this run are **not substrings of the
+170 of RAG's 405 citations in this run are **not substrings of the
 retrieved text**. The LLM wrote convincing quotes that don't exist.
 Caught only by a post-hoc substring check — a human skimming the output
 wouldn't flag any of them.
@@ -100,7 +118,12 @@ PAG's citations come from a lookup table built from the feature
 dictionary, so every one is a real substring by construction. No prompt
 engineering, no retry loop, no self-critique.
 
-## PAG's three misses
+## PAG's losses (curated set) — intentional and structural
+
+On the **curated** diagnostic set (15 scenarios, 45 runs), both PAG
+modes scored 42/45. All three misses on each side are **one scenario
+failing three times** — the decision determinism working as intended,
+wrong answer included.
 
 Both PAG modes scored 42/45. All three misses on each side are **one
 scenario failing three times** — the decision determinism working as
@@ -128,9 +151,36 @@ PAG-keyword fires on the substrings `confidential source` and
 widening the `negative_keywords` list or by using a negation-aware
 parser. Not a fundamental ceiling.
 
-Both PAG misses have a locatable, fixable cause. RAG's 24 fabrications
+Both PAG misses have a locatable, fixable cause. RAG's 170 fabrications
 are spread across scenarios it answered *correctly* and have no cause
 beyond "the LLM wrote plausible text."
+
+## PAG's losses (case-derived set) — the honest limit
+
+On the **57 case-derived scenarios** auto-extracted from DOJ Guide
+parentheticals, PAG drops to **44% correct** (76/171). RAG holds 87%.
+
+The drop is structural. The case-derived scenarios describe records in
+**doctrinal shorthand** — *"material supplied by outside contractors,"
+"formal opinion prepared by English barrister,"* etc. — because
+that's how the Guide's footnotes talk about cases. These descriptions:
+
+- turn on **case-law doctrine** the pearl doesn't encode (e.g., Klamath
+  held that communications with tribes aren't "inter-agency" even
+  though they look like it on the face of the statute);
+- **under-match the keyword extractor** (abstract legal nouns like
+  *"formal opinion"* don't fire the keyword dictionary's *"attorney
+  work product"* trigger);
+- **RAG retrieves the Guide page that contains the case**, so its
+  correctness on these scenarios is high — but its citation faithfulness
+  on the case-derived set is **only 53%** (165/309 real, 144 fabricated).
+
+The tradeoff is now clear: RAG wins correctness on case-law-sensitive
+records but fabricates half its citations; PAG loses correctness where
+case law matters but cites nothing it can't back up. If we fed the pearl
+a richer trace set that encoded case-law doctrine (e.g., Klamath's
+consultant corollary as an inverse pattern with a verbatim case quote),
+PAG's case-law correctness would climb. That work hasn't been done here.
 
 ## How PAG works
 

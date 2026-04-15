@@ -1,0 +1,19 @@
+{
+  "id": "case_conoco_inc_v_doj",
+  "description": "A FOIA request seeks the following records: \"unaddressed\" documents located in agency files and rejecting claim that records must \"'circulate[] within the agency'\" to be protected.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Conoco Inc. v. DOJ",
+    "source_doc": "doj_guide_exemption_5",
+    "source_page": 21,
+    "record_description_quote": "\"unaddressed\" documents located in agency files and rejecting claim that records must \"'circulate[] within the agency'\" to be protected",
+    "outcome_quote": "protecting \"unaddressed\" documents located in agency files and rejecting claim that record",
+    "note": "auto-extracted from doj_guide_exemption_5 p.21 parenthetical"
+  }
+}

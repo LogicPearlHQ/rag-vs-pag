@@ -1,0 +1,19 @@
+{
+  "id": "case_p_l_c_v_united_states",
+  "description": "A FOIA request seeks the following records: that there may be privacy interest in personal information even if \"available on publicly recorded filings\".",
+  "expected": {
+    "exemption": "b6",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "P.L.C. v. United States",
+    "source_doc": "doj_guide_exemption_6",
+    "source_page": 21,
+    "record_description_quote": "that there may be privacy interest in personal information even if \"available on publicly recorded filings\"",
+    "outcome_quote": "holding that there may be privacy interest in personal information even if \"available o",
+    "note": "auto-extracted from doj_guide_exemption_6 p.21 parenthetical"
+  }
+}

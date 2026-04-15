@@ -1,0 +1,19 @@
+{
+  "id": "case_inc_v_united_states",
+  "description": "A FOIA request seeks the following records: that agency had not provided enough information to determine whether it had sufficiently segregated out and released factual portions of deliberative document.",
+  "expected": {
+    "exemption": "b5",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Inc. v. United States",
+    "source_doc": "doj_guide_exemption_5",
+    "source_page": 24,
+    "record_description_quote": "that agency had not provided enough information to determine whether it had sufficiently segregated out and released factual portions of deliberative document",
+    "outcome_quote": "holding that agency had not provided enough information to determine whether it had suf",
+    "note": "auto-extracted from doj_guide_exemption_5 p.24 parenthetical"
+  }
+}

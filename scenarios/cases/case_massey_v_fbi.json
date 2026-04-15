@@ -1,0 +1,19 @@
+{
+  "id": "case_massey_v_fbi",
+  "description": "A FOIA request seeks the following records: that disclosure of informant symbol numbers and source-identifying information \"could do substantial damage to the FBI's law enforcement activities\".",
+  "expected": {
+    "exemption": "b2",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Massey v. FBI",
+    "source_doc": "doj_guide_exemption_2",
+    "source_page": 12,
+    "record_description_quote": "that disclosure of informant symbol numbers and source-identifying information \"could do substantial damage to the FBI's law enforcement activities\"",
+    "outcome_quote": "finding that disclosure of informant symbol numbers and source-identifying information ",
+    "note": "auto-extracted from doj_guide_exemption_2 p.12 parenthetical"
+  }
+}

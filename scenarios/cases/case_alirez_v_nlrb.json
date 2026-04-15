@@ -1,0 +1,19 @@
+{
+  "id": "case_alirez_v_nlrb",
+  "description": "A FOIA request seeks the following records: that deletion of names and other identifying data pertaining to small group of co-workers was simply inadequate to protect them from embarrassment or reprisals because requester could still possibly identify individuals.",
+  "expected": {
+    "exemption": "b6",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Alirez v. NLRB",
+    "source_doc": "doj_guide_exemption_6",
+    "source_page": 71,
+    "record_description_quote": "that deletion of names and other identifying data pertaining to small group of co-workers was simply inadequate to protect them from embarrassment or reprisals because requester could still possibly identify individuals",
+    "outcome_quote": "finding that deletion of names and other identifying data pertaining to small group of ",
+    "note": "auto-extracted from doj_guide_exemption_6 p.71 parenthetical"
+  }
+}

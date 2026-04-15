@@ -278,6 +278,28 @@ def main():
         print(f"no scenarios matched --only={args.only!r}", file=sys.stderr)
         return 1
 
+    # Build an id -> path map so scenarios in subdirectories (e.g.,
+    # scenarios/cases/*.json) resolve correctly, not just flat-level files.
+    scenario_paths: dict[str, Path] = {}
+    for p in (ROOT / "scenarios").glob("*.json"):
+        if p.name == "cases.json" or p.name.startswith("_"):
+            continue
+        import json as _json
+
+        try:
+            sid = _json.loads(p.read_text())["id"]
+            scenario_paths[sid] = p
+        except Exception:
+            pass
+    for p in (ROOT / "scenarios").glob("*/*.json"):
+        import json as _json
+
+        try:
+            sid = _json.loads(p.read_text())["id"]
+            scenario_paths[sid] = p
+        except Exception:
+            pass
+
     console = Console()
     summaries = []
     for s in scs:
@@ -289,7 +311,7 @@ def main():
             if not args.skip_rag:
                 console.print(f"  rag run {i+1}/{args.repeat}")
                 try:
-                    rag_runs.append(rag_answer(ROOT / "scenarios" / f"{s.id}.json", cfg))
+                    rag_runs.append(rag_answer(scenario_paths[s.id], cfg))
                 except Exception as e:
                     rag_runs.append({"error": str(e), "exemption": None})
             if not args.skip_pearl:
@@ -297,7 +319,7 @@ def main():
                 try:
                     pearl_runs.append(
                         pearl_answer(
-                            ROOT / "scenarios" / f"{s.id}.json",
+                            scenario_paths[s.id],
                             cfg,
                             extractor=args.pearl_extractor,
                         )

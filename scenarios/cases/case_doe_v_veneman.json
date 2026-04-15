@@ -1,0 +1,19 @@
+{
+  "id": "case_doe_v_veneman",
+  "description": "A FOIA request seeks the following records: personally identifying information about those individuals.",
+  "expected": {
+    "exemption": "b6",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Doe v. Veneman",
+    "source_doc": "doj_guide_exemption_6",
+    "source_page": 27,
+    "record_description_quote": "personally identifying information about those individuals",
+    "outcome_quote": "exempt from disclosure",
+    "note": "Individuals wrongly labeled as 'businesses' still had (b)(6) privacy interests."
+  }
+}

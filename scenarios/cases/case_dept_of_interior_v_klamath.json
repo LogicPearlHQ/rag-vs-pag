@@ -1,0 +1,19 @@
+{
+  "id": "case_dept_of_interior_v_klamath",
+  "description": "A FOIA request seeks the following records: communications between the Department of the Interior and several Indian tribes which, in expressing their views to the Department on certain matters of administrative decisionmaking.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Department of the Interior v. Klamath Water Users Protective Ass'n, 532 U.S. 1 (2001)",
+    "source_doc": "doj_guide_exemption_5",
+    "source_page": 5,
+    "record_description_quote": "communications between the Department of the Interior and several Indian tribes which, in expressing their views to the Department on certain matters of administrative decisionmaking",
+    "outcome_quote": "the Court ruled that the threshold of Exemption 5 did not encompass",
+    "note": "Consultant-corollary limit: parties with their own interests are not 'consultants' for (b)(5) purposes."
+  }
+}

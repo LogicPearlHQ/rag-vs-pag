@@ -5,23 +5,34 @@ from ragdemo.scenarios import load_scenarios
 SCENARIOS_DIR = Path(__file__).parent.parent / "scenarios"
 
 
-def test_fifteen_scenarios_load_cleanly():
+def test_curated_scenarios_count():
+    """Fifteen curated diagnostic scenarios at the top level."""
+    paths = [
+        p for p in SCENARIOS_DIR.glob("*.json")
+        if p.name != "cases.json" and not p.name.startswith("_")
+    ]
+    assert len(paths) == 15
+
+
+def test_all_scenarios_load_cleanly():
+    """Curated + generated-from-cases together."""
     scs = load_scenarios(SCENARIOS_DIR)
-    assert len(scs) == 15
+    assert len(scs) >= 15  # curated + however many case scenarios exist
 
 
 def test_scenarios_cover_expected_categories():
-    """Categories that remain after the refusal-pathway pass.
+    """Categories across curated + case-derived scenarios.
 
-    `out-of-distribution` was dropped: we couldn't test 'insufficient_context'
+    `out-of-distribution` was dropped (couldn't test 'insufficient_context'
     honestly without reintroducing an LLM judgment layer upstream of the
-    pearl (which would undermine the demo's own thesis). Scenarios that
-    exercise partial-elements edges live under `borderline`; scenarios that
-    RAG is supposed to win live under `rag-favored`.
+    pearl). `case-law` was added for scenarios derived from real cases
+    via scenarios/cases.json.
     """
     scs = load_scenarios(SCENARIOS_DIR)
     cats = {s.category for s in scs}
-    assert cats == {"clear-cut", "borderline", "rag-favored"}
+    assert "clear-cut" in cats
+    assert "borderline" in cats
+    assert "rag-favored" in cats
 
 
 def test_clearcut_scenarios_cover_every_exemption_plus_releasable():

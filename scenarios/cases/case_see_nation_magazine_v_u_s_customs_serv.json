@@ -1,0 +1,19 @@
+{
+  "id": "case_see_nation_magazine_v_u_s_customs_serv",
+  "description": "A FOIA request seeks the following records: no privacy interest in documents concerning presidential candidate's offer to aid federal government in drug interdiction, a subject about which the candidate had made several public statements.",
+  "expected": {
+    "exemption": "b6",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "See Nation Magazine v. U.S. Customs Serv",
+    "source_doc": "doj_guide_exemption_6",
+    "source_page": 19,
+    "record_description_quote": "no privacy interest in documents concerning presidential candidate's offer to aid federal government in drug interdiction, a subject about which the candidate had made several public statements",
+    "outcome_quote": "finding no privacy interest in documents concerning presidential candidate's offer to a",
+    "note": "auto-extracted from doj_guide_exemption_6 p.19 parenthetical"
+  }
+}

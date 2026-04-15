@@ -1,0 +1,19 @@
+{
+  "id": "case_lehrfeld_v_richardson",
+  "description": "A FOIA request seeks the following records: third-party \"return information\" submitted in support of application for tax-exempt status.",
+  "expected": {
+    "exemption": "b3",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Lehrfeld v. Richardson",
+    "source_doc": "doj_guide_exemption_3",
+    "source_page": 40,
+    "record_description_quote": "third-party \"return information\" submitted in support of application for tax-exempt status",
+    "outcome_quote": "protecting third-party \"return information\" submitted in support of application for tax-ex",
+    "note": "auto-extracted from doj_guide_exemption_3 p.40 parenthetical"
+  }
+}

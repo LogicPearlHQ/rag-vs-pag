@@ -1,0 +1,19 @@
+{
+  "id": "case_heights_community_congress_v_va",
+  "description": "A FOIA request seeks the following records: the release of names and home addresses.",
+  "expected": {
+    "exemption": "b6",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Heights Community Congress v. VA",
+    "source_doc": "doj_guide_exemption_6",
+    "source_page": 54,
+    "record_description_quote": "the release of names and home addresses",
+    "outcome_quote": "involuntary personal involvement",
+    "note": "Release of names+home addresses would cause involuntary involvement without furthering any public interest \u2014 (b)(6) applies."
+  }
+}

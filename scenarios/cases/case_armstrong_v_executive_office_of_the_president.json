@@ -1,0 +1,19 @@
+{
+  "id": "case_armstrong_v_executive_office_of_the_president",
+  "description": "A FOIA request seeks the following records: that when district court uses an in camera affidavit, even in national security cases, \"it must both make its reasons for doing so clear and make as much as possible of the in camera submission available to the opposing party\" (citing Lykins v. DOJ, 725 F.2d 1455, 1465 (D.C. Cir. 1984.",
+  "expected": {
+    "exemption": "b1",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Armstrong v. Executive Office of the President",
+    "source_doc": "doj_guide_exemption_1",
+    "source_page": 11,
+    "record_description_quote": "that when district court uses an in camera affidavit, even in national security cases, \"it must both make its reasons for doing so clear and make as much as possible of the in camera submission available to the opposing party\" (citing Lykins v. DOJ, 725 F.2d 1455, 1465 (D.C. Cir. 1984",
+    "outcome_quote": "holding that when district court uses an in camera affidavit, even in national security",
+    "note": "auto-extracted from doj_guide_exemption_1 p.11 parenthetical"
+  }
+}

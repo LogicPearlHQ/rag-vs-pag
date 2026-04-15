@@ -1,0 +1,19 @@
+{
+  "id": "case_see_sladek_v_bensinger",
+  "description": "A FOIA request seeks the following records: Exemption 7 inapplicable to DEA manual that \"was not compiled in the course of a specific investigation\".",
+  "expected": {
+    "exemption": "b7",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "See Sladek v. Bensinger",
+    "source_doc": "doj_guide_exemption_7",
+    "source_page": 2,
+    "record_description_quote": "Exemption 7 inapplicable to DEA manual that \"was not compiled in the course of a specific investigation\"",
+    "outcome_quote": "holding Exemption 7 inapplicable to DEA manual that \"was not compiled in the course of ",
+    "note": "auto-extracted from doj_guide_exemption_7 p.2 parenthetical"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "case_pub_citizen_v_dep_t_of_state",
+  "description": "A FOIA request seeks the following records: agency's affidavits sufficiently detailed to support Exemption 1 withholding and determining that subsequent release of some previously classified information was not evidence of bad faith.",
+  "expected": {
+    "exemption": "b1",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Pub. Citizen v. Dep't of State",
+    "source_doc": "doj_guide_exemption_1",
+    "source_page": 5,
+    "record_description_quote": "agency's affidavits sufficiently detailed to support Exemption 1 withholding and determining that subsequent release of some previously classified information was not evidence of bad faith",
+    "outcome_quote": "finding agency's affidavits sufficiently detailed to support Exemption 1 withholding an",
+    "note": "auto-extracted from doj_guide_exemption_1 p.5 parenthetical"
+  }
+}

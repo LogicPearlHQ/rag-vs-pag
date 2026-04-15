@@ -1,0 +1,19 @@
+{
+  "id": "case_military_audit_project_v_casey",
+  "description": "A FOIA request seeks the following records: that publication of Senate report does not constitute official release of agency information.",
+  "expected": {
+    "exemption": "b1",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Military Audit Project v. Casey",
+    "source_doc": "doj_guide_exemption_1",
+    "source_page": 16,
+    "record_description_quote": "that publication of Senate report does not constitute official release of agency information",
+    "outcome_quote": "finding that publication of Senate report does not constitute official release of agenc",
+    "note": "auto-extracted from doj_guide_exemption_1 p.16 parenthetical"
+  }
+}

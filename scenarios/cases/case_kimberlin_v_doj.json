@@ -1,0 +1,19 @@
+{
+  "id": "case_kimberlin_v_doj",
+  "description": "A FOIA request seeks the following records: information about investigation of staff-level attorney for allegations of unauthorized disclosure of information to media.",
+  "expected": {
+    "exemption": "b6",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Kimberlin v. DOJ",
+    "source_doc": "doj_guide_exemption_6",
+    "source_page": 48,
+    "record_description_quote": "information about investigation of staff-level attorney for allegations of unauthorized disclosure of information to media",
+    "outcome_quote": "protecting information about investigation of staff-level attorney for allegations of unau",
+    "note": "auto-extracted from doj_guide_exemption_6 p.48 parenthetical"
+  }
+}

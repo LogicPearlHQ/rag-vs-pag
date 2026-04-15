@@ -1,0 +1,19 @@
+{
+  "id": "case_doj_v_julian",
+  "description": "A FOIA request seeks the following records: that presentence report privilege, designed to protect subject of report from third-party access, cannot be invoked against subject himself.",
+  "expected": {
+    "exemption": "b5",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "DOJ v. Julian",
+    "source_doc": "doj_guide_exemption_5",
+    "source_page": 53,
+    "record_description_quote": "that presentence report privilege, designed to protect subject of report from third-party access, cannot be invoked against subject himself",
+    "outcome_quote": "holding that presentence report privilege, designed to protect subject of report from t",
+    "note": "auto-extracted from doj_guide_exemption_5 p.53 parenthetical"
+  }
+}

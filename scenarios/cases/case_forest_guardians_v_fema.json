@@ -1,0 +1,19 @@
+{
+  "id": "case_forest_guardians_v_fema",
+  "description": "A FOIA request seeks the following records: that electronic Geographic Information System files containing \"specific geographic location\" of structures are \"similar files\".",
+  "expected": {
+    "exemption": "b6",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Forest Guardians v. FEMA",
+    "source_doc": "doj_guide_exemption_6",
+    "source_page": 6,
+    "record_description_quote": "that electronic Geographic Information System files containing \"specific geographic location\" of structures are \"similar files\"",
+    "outcome_quote": "finding that electronic Geographic Information System files containing \"specific geogra",
+    "note": "auto-extracted from doj_guide_exemption_6 p.6 parenthetical"
+  }
+}

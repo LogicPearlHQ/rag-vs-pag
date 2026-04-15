@@ -1,0 +1,19 @@
+{
+  "id": "case_physicians_committee_v_nih",
+  "description": "A FOIA request seeks the following records: documents submitted by an NIH grant applicant.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Physicians Committee for Responsible Medicine v. NIH",
+    "source_doc": "doj_guide_exemption_5",
+    "source_page": 6,
+    "record_description_quote": "documents submitted by an NIH grant applicant",
+    "outcome_quote": "Exemption 5 could not be used to protect",
+    "note": "Grant applicants are not 'consultants' under Klamath \u2014 (b)(5) does not apply."
+  }
+}

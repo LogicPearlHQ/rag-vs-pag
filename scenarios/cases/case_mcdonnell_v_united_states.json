@@ -1,0 +1,19 @@
+{
+  "id": "case_mcdonnell_v_united_states",
+  "description": "A FOIA request seeks the following records: classification of cryptographic information dating back to 1934 when release \"could enable hostile entities to interpret other, more sensitive documents similarly encoded\".",
+  "expected": {
+    "exemption": "b1",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "McDonnell v. United States",
+    "source_doc": "doj_guide_exemption_1",
+    "source_page": 21,
+    "record_description_quote": "classification of cryptographic information dating back to 1934 when release \"could enable hostile entities to interpret other, more sensitive documents similarly encoded\"",
+    "outcome_quote": "upholding classification of cryptographic information dating back to 1934 when release \"c",
+    "note": "auto-extracted from doj_guide_exemption_1 p.21 parenthetical"
+  }
+}

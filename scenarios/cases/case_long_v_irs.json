@@ -1,0 +1,19 @@
+{
+  "id": "case_long_v_irs",
+  "description": "A FOIA request seeks the following records: check sheets and zip code information exempt from disclosure pursuant to 26 U.S.C. \u00a7 6103(a.",
+  "expected": {
+    "exemption": "b3",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Long v. IRS",
+    "source_doc": "doj_guide_exemption_3",
+    "source_page": 39,
+    "record_description_quote": "check sheets and zip code information exempt from disclosure pursuant to 26 U.S.C. \u00a7 6103(a",
+    "outcome_quote": "finding check sheets and zip code information exempt from disclosure pursuant to 26 U",
+    "note": "auto-extracted from doj_guide_exemption_3 p.39 parenthetical"
+  }
+}

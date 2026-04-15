@@ -47,5 +47,18 @@ def load_scenario(path: Path | str) -> Scenario:
 
 
 def load_scenarios(dir_: Path | str) -> list[Scenario]:
-    paths = sorted(Path(dir_).glob("*.json"))
+    """Load all .json scenarios in `dir_`, recursing one level.
+
+    The top level holds curated diagnostic scenarios; the `cases/`
+    subdirectory holds scenarios generated from real FOIA case
+    records (see scenarios/generate_scenarios.py). Top-level files
+    prefixed with an underscore or named `cases.json` are data
+    files, not scenarios, and are skipped.
+    """
+    dir_ = Path(dir_)
+    paths: list[Path] = [
+        p for p in sorted(dir_.glob("*.json"))
+        if p.name != "cases.json" and not p.name.startswith("_")
+    ]
+    paths.extend(sorted(dir_.glob("*/*.json")))
     return [load_scenario(p) for p in paths]

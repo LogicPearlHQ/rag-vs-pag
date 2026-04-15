@@ -1,0 +1,19 @@
+{
+  "id": "case_nrdc_v_dod",
+  "description": "A FOIA request seeks the following records: well information pertaining to privately and publicly owned water wells.",
+  "expected": {
+    "exemption": "b9",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "National Resources Defense Council v. DOD",
+    "source_doc": "doj_guide_exemption_9",
+    "source_page": 2,
+    "record_description_quote": "well information pertaining to privately and publicly owned water wells",
+    "outcome_quote": "the FOIA does not distinguish between",
+    "note": "(b)(9) covers both private and public well data; statute does not distinguish."
+  }
+}

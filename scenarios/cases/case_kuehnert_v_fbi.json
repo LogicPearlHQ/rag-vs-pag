@@ -1,0 +1,19 @@
+{
+  "id": "case_kuehnert_v_fbi",
+  "description": "A FOIA request seeks the following records: that \"Exemption 7 extends to all investigative files of a (continued....",
+  "expected": {
+    "exemption": "b7",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Kuehnert v. FBI",
+    "source_doc": "doj_guide_exemption_7",
+    "source_page": 24,
+    "record_description_quote": "that \"Exemption 7 extends to all investigative files of a (continued...",
+    "outcome_quote": "holding that \"Exemption 7 extends to all investigative files of a (continued",
+    "note": "auto-extracted from doj_guide_exemption_7 p.24 parenthetical"
+  }
+}

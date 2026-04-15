@@ -1,0 +1,19 @@
+{
+  "id": "case_cmty_on_the_move_v_bd_of_governors_of_the_fed_reserve_sys",
+  "description": "A FOIA request seeks the following records: that Exemption 4 does not apply \"if identical information is otherwise in the public domain\" (citing Niagara Mohawk Power , 169 F.3d at 19.",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Cmty. on the Move v. Bd. of Governors of the Fed. Reserve Sys",
+    "source_doc": "doj_guide_exemption_4",
+    "source_page": 54,
+    "record_description_quote": "that Exemption 4 does not apply \"if identical information is otherwise in the public domain\" (citing Niagara Mohawk Power , 169 F.3d at 19",
+    "outcome_quote": "concluding that Exemption 4 does not apply \"if identical information is otherwise in the p",
+    "note": "auto-extracted from doj_guide_exemption_4 p.54 parenthetical"
+  }
+}

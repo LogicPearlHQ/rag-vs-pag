@@ -1,0 +1,19 @@
+{
+  "id": "case_larson_v_dep_t_of_state",
+  "description": "A FOIA request seeks the following records: that if agency affidavit contains \"reasonable specificity\" and \"information logically falls within claimed exemption,\" then \"court should not should not conduct a more detailed inquiry to test the agency's judgment\".",
+  "expected": {
+    "exemption": "b1",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Larson v. Dep't of State",
+    "source_doc": "doj_guide_exemption_1",
+    "source_page": 5,
+    "record_description_quote": "that if agency affidavit contains \"reasonable specificity\" and \"information logically falls within claimed exemption,\" then \"court should not should not conduct a more detailed inquiry to test the agency's judgment\"",
+    "outcome_quote": "holding that if agency affidavit contains \"reasonable specificity\" and \"information log",
+    "note": "auto-extracted from doj_guide_exemption_1 p.5 parenthetical"
+  }
+}

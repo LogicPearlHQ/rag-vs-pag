@@ -1,0 +1,19 @@
+{
+  "id": "case_frazee_v_u_s_forest_serv",
+  "description": "A FOIA request seeks the following records: that because requested document was \"not protected from disclosure under Exemption 4,\" it also was \"not exempt from disclosure under the Trade Secrets Act\".",
+  "expected": {
+    "exemption": "releasable",
+    "releasable": true,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "Frazee v. U.S. Forest Serv",
+    "source_doc": "doj_guide_exemption_4",
+    "source_page": 93,
+    "record_description_quote": "that because requested document was \"not protected from disclosure under Exemption 4,\" it also was \"not exempt from disclosure under the Trade Secrets Act\"",
+    "outcome_quote": "holding that because requested document was \"not protected from disclosure under Exempt",
+    "note": "auto-extracted from doj_guide_exemption_4 p.93 parenthetical"
+  }
+}

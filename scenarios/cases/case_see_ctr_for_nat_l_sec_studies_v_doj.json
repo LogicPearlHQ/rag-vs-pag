@@ -1,0 +1,19 @@
+{
+  "id": "case_see_ctr_for_nat_l_sec_studies_v_doj",
+  "description": "A FOIA request seeks the following records: law enforcement threshold met by records compiled in course of investigation into \"breach of this nation's security\".",
+  "expected": {
+    "exemption": "b7",
+    "releasable": false,
+    "rationale_keywords": [],
+    "expected_authority": null
+  },
+  "category": "case-law",
+  "_provenance": {
+    "case_name": "See Ctr. for Nat'l Sec. Studies v. DOJ",
+    "source_doc": "doj_guide_exemption_7",
+    "source_page": 14,
+    "record_description_quote": "law enforcement threshold met by records compiled in course of investigation into \"breach of this nation's security\"",
+    "outcome_quote": "finding law enforcement threshold met by records compiled in course of investigation in",
+    "note": "auto-extracted from doj_guide_exemption_7 p.14 parenthetical"
+  }
+}
