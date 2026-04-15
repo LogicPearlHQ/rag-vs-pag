@@ -1,223 +1,215 @@
-# rag-vs-pag — RAG vs Pearl-Augmented Generation
+# RAG vs PAG
 
-An end-to-end demo on 15 FOIA record-classification scenarios against real
-federal primary sources (5 U.S.C. § 552, DOJ OIP FOIA Guide, 28 C.F.R.
-Part 16). Same LLM, same corpus, three backends compared side by side.
+I replaced the "LLM synthesizes your answer" step of a RAG pipeline with a
+deterministic rule artifact — a "pearl" from
+[LogicPearl](https://github.com/LogicPearlHQ/logicpearl) — and ran both
+against the same FOIA corpus on 15 scenarios.
 
-**PAG = Pearl-Augmented Generation.** RAG extends an LLM with *what's
-retrieved from documents* (fetch passages → synthesize). PAG extends it
-with *a reviewed, deterministic rule artifact* (extract features →
-pearl decides → verdict + cited authority). One adds recall to an LLM;
-the other adds reviewed judgment. The LLM generates the surrounding
-prose; the pearl makes the call.
+Calling the pattern **PAG — Pearl-Augmented Generation**. RAG extends an
+LLM with what's retrieved from documents. PAG extends it with a reviewed,
+deterministic rule artifact. One adds recall to an LLM; the other adds
+reviewed judgment. The LLM writes the surrounding prose; the pearl makes
+the call.
 
-## Results
+Same model (gpt-4o, temp=0), same corpus (5 U.S.C. § 552 + DOJ OIP FOIA
+Guide + 28 C.F.R. Part 16), same scenarios, three backends.
 
-| | **RAG** | **PAG — LLM extract** | **PAG — keyword extract** |
+| | RAG | PAG (LLM extract) | PAG (keyword extract) |
 |---|---|---|---|
-| Correct | 45 / 45 (100%) | 42 / 45 (93%) | 42 / 45 (93%) |
-| **Byte-identical full output** | 25 / 45 (56%) | 20 / 45 (44%) | **45 / 45 (100%)** |
-| **Citation faithfulness** | **70 / 94 (74%)** | **57 / 57 (100%)** | **72 / 72 (100%)** |
-| LLM calls per scenario | 1 | 2 | **0** |
-| Avg latency | 3.7 s | 3.8 s | **<1 ms** |
-| Marginal cost per run | ~$0.01 | ~$0.005 | **$0** |
+| Correct | 45/45 (100%) | 42/45 (93%) | 42/45 (93%) |
+| **Byte-identical reruns** | 25/45 | 20/45 | **45/45** |
+| **Citation faithfulness** | **70/94 (74%)** | **57/57 (100%)** | **72/72 (100%)** |
+| LLM calls / scenario | 1 | 2 | **0** |
+| Latency | 3.7 s | 3.8 s | **<1 ms** |
+| Marginal cost / run | ~$0.01 | ~$0.005 | **$0** |
 
-Correctness is comparable on this benchmark. The separators are
-**citation faithfulness** (PAG paths are 100% by construction; RAG's 74%
-is LLM-bounded) and **full-output reproducibility** (only keyword-extract
-PAG achieves 100% byte-identical reruns, because there is no LLM in its
-pipeline to drift).
+RAG wins correctness. PAG wins everything else. The rightmost column —
+PAG with a keyword extractor — runs end-to-end without an LLM at all.
 
-**Full writeup with prompts, all failure modes, and fairness
-notes:** [`docs/findings.md`](docs/findings.md).
+## The metric that actually matters
 
-## Correctness and citation faithfulness are two different questions
+"Correct" and "citations are real" aren't the same question. A system
+can answer correctly with excerpts it made up.
 
-**Correctness** — did the system's decision match the scenario's gold
-label?
+24 of RAG's 94 citations in this run are **not substrings of the
+retrieved text**. The LLM wrote convincing quotes that don't exist.
+Caught only by a post-hoc substring check — a human skimming the output
+wouldn't flag any of them.
 
-**Citation faithfulness** — does each cited authority actually appear,
-as a real substring, in the source it claims to come from? Auto-checked
-by normalized-substring match against retrieved chunks (RAG) or the
-feature dictionary (PAG).
+Three of them, verbatim from the run:
 
-The two metrics are independent. A system can answer correctly while
-citing excerpts that don't exist anywhere in the source. A system can
-answer wrong while citing everything faithfully. Production audits care
-about both, not just the first. On these 15 scenarios, RAG aced
-correctness (45/45) while **24 of its 94 cited excerpts are not real
-substrings of the retrieved text**. PAG's cites come from a lookup
-table, so every one of them is real by construction.
+### 1. Ellipsis compression
 
-## What "unfaithful citation" looks like — three real captured examples
+Cited as one passage from 5 U.S.C. § 552(b)(7):
 
-Copy-pasted from live RAG runs against the real DOJ FOIA Guide and
-statute corpus.
-
-**1. Ellipsis compression** (scenario 07, LE source). RAG cited as a
-single continuous passage from `5 U.S.C. § 552(b)(7)`:
-
-> *"records or information compiled for law enforcement purposes, but
+> *records or information compiled for law enforcement purposes, but
 > only to the extent that the production of such law enforcement
 > records or information**...** (D) could reasonably be expected to
-> disclose..."*
+> disclose...*
 
-The `...` silently elides subclauses (A), (B), and (C) — hundreds of
-words of statute text. The stitched-together quote doesn't exist
-verbatim anywhere in the statute.
+The `...` hides the whole of subclauses (A)(B)(C) — hundreds of words of
+statute. The "quote" is a stitch-up.
 
-**2. Plausible fabrication from training data** (scenario 13,
-personnel roster). Cited as `DOJ FOIA Guide, Exemption 6, p. 14`:
+### 2. Plausible fabrication
 
-> *"Similarly, civilian federal employees who are not involved in law
+Cited as `DOJ FOIA Guide, Exemption 6, p. 14`:
+
+> *Similarly, civilian federal employees who are not involved in law
 > enforcement generally have no expectation of privacy regarding their
-> names, titles, grades, salaries, and duty stations as employees."*
+> names, titles, grades, salaries, and duty stations...*
 
-Plausible, on-topic, grammatically clean. Not actually on page 14 of
-the retrieved chunk. The LLM is recalling from its training data (the
-DOJ Guide is public), not quoting the retrieval.
+Clean. On topic. Real page number. Not actually on page 14 of what the
+retrieval fetched. The LLM pulled from training data (the DOJ Guide is
+public) instead of the retrieved chunk.
 
-**3. Memory-mixed quote** (scenario 03, tax return). Cited as `DOJ
-FOIA Guide, Exemption 3, p. 40`:
+### 3. Memory-mixed
 
-> *"Exemption 3 or return information of other taxpayers. Specifically,
-> section 6103 provides that '[r]eturns and return information shall
-> be confidential,' subject to a number of enumerated exceptions."*
+Cited as `DOJ FOIA Guide, Exemption 3, p. 40`:
 
-Retrieval actually fetched page 40 — the LLM had real text in context.
-Rather than quote it, the LLM blended retrieved content with remembered
-phrasing into a new "quote" that reads authoritative but isn't a
-substring.
+> *Exemption 3 or return information of other taxpayers. Specifically,
+> section 6103 provides that '[r]eturns and return information shall be
+> confidential,' subject to a number of enumerated exceptions.*
 
-**Common pattern:** all three failures are grammatically clean,
-plausible, and paired with real page numbers. A human reader skimming
-the output wouldn't flag any of them. Only the automated substring
-check catches them.
+Page 40 was retrieved — the real text was in the LLM's context. It
+ignored the retrieved text and wrote its own phrasing that blends with
+what it remembers. Not a substring of anything retrieved.
 
-## Why PAG missed 3 of 45 — and why that's the intended story
+All three look credible. All three would slip past a human reviewer.
 
-Both PAG modes scored 42/45. The 3 misses on each side are **a single
-scenario failing across 3 reruns** (decision determinism at work — the
-same answer every time, wrong or right).
+PAG's citations come from a lookup table built from the feature
+dictionary, so every one is a real substring by construction. No prompt
+engineering, no retry loop, no self-critique.
 
-- **PAG-LLM misses scenario 15** (all 3 reruns). The scenario is:
-  *"Summarize the legislative history of FOIA Exemption 5 and the two
-  Supreme Court opinions most responsible for shaping its current
-  scope."* This is a **synthesis task**, not a classification — PAG is
-  for bounded decisions, not for writing paragraphs about legislative
-  history. We deliberately included it to test the boundary. The LLM
-  feature extractor gets fooled because the prompt mentions *"Exemption
-  5"* and confidently sets (b)(5) features TRUE; the pearl then
-  faithfully applies its (b)(5) rule to a record that never existed.
-  **This is by design.** If you drop scenario 15 from the eval,
-  PAG-LLM scores 45/45. We kept it because *"use each tool for what
-  it's for"* is a more honest framing than *"PAG wins everything."*
-  RAG is the right tool for this prompt — and indeed RAG used its
-  `insufficient_context` refusal path on it.
+## PAG's three misses were on purpose
 
-- **PAG-keyword misses scenario 14** (all 3 reruns). The description
-  reads *"...would not reveal a confidential source... would not
-  disclose techniques..."*. The keyword extractor fires on
-  *"confidential source"* and *"disclose techniques"* because
-  substring matching doesn't understand negation. Fixable by widening
-  the `negative_keywords` lists (e.g., add *"would not reveal"*) or
-  by using a negation-aware parser. Not a fundamental ceiling.
+Both PAG modes scored 42/45. All three misses on each side are **one
+scenario failing three times** — the decision determinism working as
+intended, wrong answer included.
 
-The takeaway isn't "PAG would get 45/45 with more effort." The
-takeaway is that PAG's wrongness has a **locatable cause** — a
-scenario that's out of its design scope, or a specific keyword gap we
-can point at and fix. RAG's 24 unfaithful citations are spread across
-scenarios it got *right*, and they have no such locatable cause beyond
-"the LLM wrote plausible text instead of quoting the retrieval."
+**PAG-LLM misses scenario 15:** *"Summarize the legislative history of
+FOIA Exemption 5 and the two Supreme Court opinions most responsible
+for shaping its current scope."*
 
-## How it works
+That's a synthesis task. PAG is a classifier. I put it in the eval to
+probe the boundary. Drop scenario 15 and PAG-LLM scores 45/45. I kept
+it because "use each tool for what it's for" is a more honest pitch
+than "PAG wins everything." RAG got this one by using its
+`insufficient_context` refusal path — which is what you want for a
+synthesis request.
 
-Three pipelines over the same FOIA corpus:
+**PAG-keyword misses scenario 14:** *"...would not reveal a confidential
+source... would not disclose techniques..."*.
+
+Substring match fires on `confidential source` and `disclose
+techniques` without understanding the negation. A wider
+`negative_keywords` list (add `"would not reveal"`, `"would not
+disclose"`) or a dependency-parse negation scope fixes it.
+
+In both cases the wrongness has a locatable cause you can point at and
+fix. RAG's 24 fabrications are spread across scenarios it answered
+*correctly* and have no cause beyond "LLM wrote plausible text."
+
+## How PAG works
 
 ```
-RAG:            text ──► retrieve 8 chunks ──► LLM synthesizes answer + cites
-
-PAG (LLM ext):  text ──► LLM extracts {feature: bool} ──►
-                ──► logicpearl run (Rust engine, no LLM) ──► decision ──►
-                ──► LLM writes prose (cannot change the verdict)
-
-PAG (keyword):  text ──► keyword substring match ──►
-                ──► logicpearl run (Rust engine, no LLM) ──► decision ──►
-                ──► Python template rationale
+RAG:            text → retrieve 8 chunks → LLM synthesizes + cites
+PAG (LLM):      text → LLM extracts {feature: bool} → pearl decides → LLM explains (can't override)
+PAG (keyword):  text → substring match → pearl decides → Python template rationale
 ```
 
-The LogicPearl engine at the heart of PAG makes **zero LLM calls** —
-it's a compiled rule evaluator in Rust (~10 ms per scenario). The
-demo's wrapper around it uses either an LLM or a keyword matcher to
-normalize free text into a feature vector. In both modes, the pearl's
-verdict is authoritative — the code architecturally prevents any LLM
-from overriding it.
+The pearl is a compiled Rust rule evaluator. 10 ms per scenario. Zero
+LLM calls — that part is provably deterministic. The LLM (in the first
+PAG mode) only turns free text into a feature vector on the way in, and
+turns the pearl's rule output into prose on the way out. The code
+architecturally overwrites any verdict the LLM tries to assert in the
+explanation — the pearl's action is authoritative.
 
-## Trust boundary
+Keyword-mode PAG cuts the LLM out of both ends. ~50-line substring
+matcher for extraction, Python string template for the rationale.
+Microsecond latency, no network, no API key after the build.
 
-The pearl's trust boundary is two small JSON files:
-
-- [`pearl/feature_dictionary.json`](pearl/feature_dictionary.json) —
-  20 features, each with a statute cite and (optional) keyword list.
-- [`pearl/statute_structure.json`](pearl/statute_structure.json) —
-  element groups per exemption, each carrying a **verbatim quote from
-  § 552(b)**. A test asserts every quote is a substring of the fetched
-  statute; drift fails fast.
-
-The traces that train the pearl are then generated from those files by
-[`pearl/generate_traces.py`](pearl/generate_traces.py) — no row is
-hand-typed. The audit artifact
-[`pearl/traces_review.md`](pearl/traces_review.md) renders every
-exemplar next to the quoted statute paragraph it was derived from.
+The pearl's rules aren't hand-written. They're learned from a trace set
+**generated from the statute itself**:
+[`pearl/statute_structure.json`](pearl/statute_structure.json) lists
+the element groups per exemption, each with a verbatim quote from
+§ 552(b). A test asserts every quote is a real substring of the fetched
+statute. No trace row is typed by hand.
 
 ## Quick start
 
 ```bash
+git clone git@github.com:LogicPearlHQ/rag-vs-pag.git
+cd rag-vs-pag
 uv sync --extra dev
-cp .env.example .env            # OPENAI_API_KEY
-make fetch                      # pull the corpus (11 docs, sha256-verified)
-make index                      # chunk + embed for the RAG baseline
-make build                      # build the LogicPearl artifact
-make demo                       # full 15 × 5 × both sides comparison
+cp .env.example .env         # OPENAI_API_KEY
+make fetch index build demo  # ~10 min, ~$0.50 of gpt-4o tokens
 ```
 
-Captured sample runs live in [`transcripts/`](transcripts/). The
-keyword-mode pearl runs offline after build — no API key needed.
+For just the offline keyword-mode PAG (no API key needed after build):
 
-## Pluggable LLM
+```bash
+uv run python compare.py --pearl-extractor keyword --skip-rag --repeat 3
+```
+
+Captured runs are in [`transcripts/`](transcripts/). Long-form writeup
+with every prompt verbatim and full failure-mode analysis in
+[`docs/findings.md`](docs/findings.md).
+
+## Limitations worth naming
+
+- **15 scenarios is small.** Percentages are robust only qualitatively.
+- **Pedagogical corpus.** Statute + 9 DOJ Guide chapters + 28 CFR
+  Part 16. No case law (CourtListener's API now requires a token). Real
+  FOIA adjudication involves segregability, foreseeable-harm balancing,
+  and case-law nuance the trace set doesn't encode.
+- **RAG didn't get a second refinement pass.** The PAG did (one
+  commit's worth of trace expansion after the first run surfaced a
+  greedy-rule issue). A serious RAG team can probably push citation
+  faithfulness toward 100% by having the LLM reference chunk IDs
+  instead of writing excerpts, then looking up the excerpt
+  server-side. That's a real architecture and it works. The point
+  isn't that RAG can't be fixed — it's that PAG's 100% is one line of
+  code and RAG's 100% is custom scaffolding.
+- **Scenario 14 was swapped between the first and second runs.** The
+  original asked for `insufficient_context` as the gold label, which
+  neither system could produce without a preflight LLM-judgment step
+  that would have undermined the demo's own thesis. Both systems got
+  equal credit from the swap; the swap is documented in
+  [`docs/findings.md`](docs/findings.md).
+- Not legal advice.
+
+## Layout
+
+```
+corpus/        fetched federal docs, sha256-verified, snapshot fallback
+ragdemo/       shared libs (LLM providers, chunking, scenarios)
+rag/           RAG baseline (hybrid retrieval + cross-encoder rerank + citation check)
+pearl/         PAG: trace generator, build script, LLM + keyword extractors
+scenarios/     15 FOIA record descriptions
+compare.py     side-by-side harness
+transcripts/   captured runs (one per backend/config)
+docs/          design, implementation plan, findings
+```
+
+## Pluggable LLM provider
 
 ```bash
 LP_LLM_PROVIDER=openai          # or anthropic | ollama
 LP_LLM_MODEL=gpt-4o
-LP_EMBEDDING_PROVIDER=openai    # or sentence_transformers (fully offline)
-LP_PEARL_EXTRACTOR=llm          # or keyword (fully LLM-free PAG)
+LP_EMBEDDING_PROVIDER=openai    # or sentence_transformers (offline)
+LP_PEARL_EXTRACTOR=llm          # or keyword (offline PAG)
 ```
 
-## Documentation
+Local provider with Ollama gets you the full PAG demo with zero API
+calls end-to-end.
 
-- [`docs/findings.md`](docs/findings.md) — results, prompts, failure
-  modes with captured output, fairness notes, when-to-use-which.
-- [`docs/plans/2026-04-14-rag-demo-design.md`](docs/plans/2026-04-14-rag-demo-design.md)
-  — approved design brief.
-- [`docs/plans/2026-04-14-rag-demo-implementation.md`](docs/plans/2026-04-14-rag-demo-implementation.md)
-  — 23-task implementation plan used during the build.
+## Credits and built on
 
-## Layout
-
-```text
-corpus/              # fetched federal docs; sha256-verified
-ragdemo/             # shared libs: llm, corpus, scenarios
-rag/                 # RAG indexer + runner
-pearl/               # LogicPearl traces, generator, build.sh, runner,
-                     # keyword extractor, feature dictionary, structure
-scenarios/           # 15 FOIA record descriptions
-transcripts/         # captured demo runs
-compare.py           # side-by-side driver
-docs/                # design, implementation plan, findings
-```
-
-## Limitations
-
-Pedagogical corpus (no case law), statute-derived trace set (no case-law
-nuance), 15 scenarios, not legal advice. See the *Limitations* section
-of [`docs/findings.md`](docs/findings.md) for details.
+- **[LogicPearl](https://github.com/LogicPearlHQ/logicpearl)** — the
+  deterministic rule engine and `logicpearl` CLI.
+- Corpus fetched from
+  [law.cornell.edu](https://www.law.cornell.edu/uscode/text/5/552),
+  [justice.gov/oip/foia-guide](https://www.justice.gov/oip/foia-guide),
+  [ecfr.gov](https://www.ecfr.gov/). Federal works are public domain.
+- `gpt-4o` for the demo LLM calls at temp=0. Same results shape on
+  Claude or local Ollama.
