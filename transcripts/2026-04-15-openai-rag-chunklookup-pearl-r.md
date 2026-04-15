@@ -1,11 +1,11 @@
-# Side-by-side transcript — 2026-04-15T11:40:36Z
+# Side-by-side transcript — 2026-04-15T21:02:31Z
 
 Both paths read the same corpus. RAG retrieves + synthesizes; LogicPearl
 normalizes features + runs a deterministic artifact.
 
 - provider: `openai`    model: `gpt-4o`
 - embedding provider: `openai`
-- rag-demo git: `4c5428e0bfa5`    logicpearl: `logicpearl 0.1.5 (b3e02a6)`
+- rag-demo git: `dcd2682682ac`    logicpearl: `logicpearl 0.1.5 (b3e02a6)`
 
 Per-cell format: `[answers] (decision-det / full-det, cite-faithful/total-cites)`.
 *Decision-det* is how often the exemption verdict was identical across reruns
@@ -17,83 +17,83 @@ temperature=0).
 
 | id | category | expected | RAG | Pearl |
 |---|---|---|---|---|
-| 01_classified_memo | clear-cut | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 9/9 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) |
-| 02_purely_internal_personnel_rule | clear-cut | b2 | ['b2', 'b2', 'b2'] (3/3 dec, 1/3 full, 6/6 cite) | ['b2', 'b2', 'b2'] (3/3 dec, 3/3 full, 3/3 cite) |
-| 03_exempt_by_other_statute | clear-cut | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 9/9 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 3/3 full, 3/3 cite) |
-| 04_trade_secret | clear-cut | b4 | ['b4', 'b4', 'b4'] (3/3 dec, 2/3 full, 9/9 cite) | ['b4', 'b4', 'b4'] (3/3 dec, 2/3 full, 3/3 cite) |
-| 05_predecisional_memo | clear-cut | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 18/18 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
-| 06_personnel_privacy | clear-cut | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 8/8 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) |
+| 01_classified_memo | clear-cut | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 9/9 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) |
+| 02_purely_internal_personnel_rule | clear-cut | b2 | ['b2', 'b2', 'b2'] (3/3 dec, 3/3 full, 6/6 cite) | ['b2', 'b2', 'b2'] (3/3 dec, 2/3 full, 3/3 cite) |
+| 03_exempt_by_other_statute | clear-cut | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 9/9 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 3/3 cite) |
+| 04_trade_secret | clear-cut | b4 | ['b4', 'b4', 'b4'] (3/3 dec, 2/3 full, 10/10 cite) | ['b4', 'b4', 'b4'] (3/3 dec, 3/3 full, 3/3 cite) |
+| 05_predecisional_memo | clear-cut | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 18/18 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
+| 06_personnel_privacy | clear-cut | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) |
 | 07_law_enforcement_source | clear-cut | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 3/3 full, 3/3 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 3/3 full, 6/6 cite) |
-| 08_bank_exam | clear-cut | b8 | ['b8', 'b8', 'b8'] (3/3 dec, 2/3 full, 12/12 cite) | ['b8', 'b8', 'b8'] (3/3 dec, 3/3 full, 3/3 cite) |
-| 09_geological_well_data | clear-cut | b9 | ['b9', 'b9', 'b9'] (3/3 dec, 3/3 full, 6/6 cite) | ['b9', 'b9', 'b9'] (3/3 dec, 2/3 full, 3/3 cite) |
-| 10_clean_releasable | clear-cut | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 4/4 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 3/3 cite) |
-| 11_borderline_declassified | borderline | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 9/9 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 3/3 cite) |
-| 12_borderline_routine_memo | borderline | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 9/9 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 0/0 cite) |
-| 13_borderline_personnel_roster | borderline | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 3/3 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 0/0 cite) |
-| 14_le_no_harm | borderline | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 6/6 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 0/0 cite) |
-| 15_rag_favored_synthesis | rag-favored | not_applicable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 9/9 cite) | ['b5', 'b5', 'releasable'] (2/3 dec, 1/3 full, 4/4 cite) |
-| case_alirez_v_nlrb | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 10/10 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_armstrong_v_executive_office_of_the_president | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_army_times_publ_g_co_v_dep_t_of_the_air_force | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 9/9 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_associated_press_v_dod | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 3/3 full, 6/6 cite) |
-| case_avondale_indus_v_nlrb | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_badhwar_v_u_s_dep_t_of_air_force | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_bowen_v_fda | case-law | b4 | ['b4', 'b4', 'b4'] (3/3 dec, 2/3 full, 12/12 cite) | ['b4', 'b4', 'b4'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_but_cf_rosenfeld_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 7/7 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) |
-| case_center_for_national_security_studies_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 4/4 cite) |
-| case_chartered_v_irs | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 7/7 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 3/3 cite) |
-| case_city_of_va_beach_v_u_s_dep_t_of_commerce | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_cmty_on_the_move_v_bd_of_governors_of_the_fed_reserve_sys | case-law | releasable | ['b4', 'b4', 'b4'] (3/3 dec, 1/3 full, 9/9 cite) | ['b4', 'b4', 'b4'] (3/3 dec, 1/3 full, 3/3 cite) |
-| case_conoco_inc_v_doj | case-law | releasable | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_core_v_usps | case-law | b6 | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 6/6 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 0/0 cite) |
+| 08_bank_exam | clear-cut | b8 | ['b8', 'b8', 'b8'] (3/3 dec, 1/3 full, 13/13 cite) | ['b8', 'b8', 'b8'] (3/3 dec, 2/3 full, 3/3 cite) |
+| 09_geological_well_data | clear-cut | b9 | ['b9', 'b9', 'b9'] (3/3 dec, 3/3 full, 6/6 cite) | ['b9', 'b9', 'b9'] (3/3 dec, 1/3 full, 3/3 cite) |
+| 10_clean_releasable | clear-cut | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 5/5 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 3/3 cite) |
+| 11_borderline_declassified | borderline | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 9/9 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 3/3 cite) |
+| 12_borderline_routine_memo | borderline | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 9/9 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 0/0 cite) |
+| 13_borderline_personnel_roster | borderline | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 3/3 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 0/0 cite) |
+| 14_le_no_harm | borderline | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 6/6 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 0/0 cite) |
+| 15_rag_favored_synthesis | rag-favored | not_applicable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 9/9 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 3/3 full, 6/6 cite) |
+| case_alirez_v_nlrb | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 10/10 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_armstrong_v_executive_office_of_the_president | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 7/7 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) |
+| case_army_times_publ_g_co_v_dep_t_of_the_air_force | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 9/9 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 4/4 cite) |
+| case_associated_press_v_dod | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) |
+| case_avondale_indus_v_nlrb | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_badhwar_v_u_s_dep_t_of_air_force | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 3/3 full, 6/6 cite) |
+| case_bowen_v_fda | case-law | b4 | ['b4', 'b4', 'b4'] (3/3 dec, 1/3 full, 11/11 cite) | ['b4', 'b4', 'b4'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_but_cf_rosenfeld_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 6/6 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_center_for_national_security_studies_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_chartered_v_irs | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 7/7 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_city_of_va_beach_v_u_s_dep_t_of_commerce | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_cmty_on_the_move_v_bd_of_governors_of_the_fed_reserve_sys | case-law | releasable | ['b4', 'b4', 'b4'] (3/3 dec, 1/3 full, 8/8 cite) | ['b4', 'b4', 'b4'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_conoco_inc_v_doj | case-law | releasable | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_core_v_usps | case-law | b6 | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 6/6 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 0/0 cite) |
 | case_curran_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 6/6 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) |
-| case_davis_co_v_califano | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_dept_of_interior_v_klamath | case-law | releasable | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 4/4 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_doe_v_veneman | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 4/4 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 3/3 full, 6/6 cite) |
-| case_doj_v_julian | case-law | b5 | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 3/3 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 0/0 cite) |
+| case_davis_co_v_califano | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
+| case_dept_of_interior_v_klamath | case-law | releasable | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 4/4 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_doe_v_veneman | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 5/5 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_doj_v_julian | case-law | b5 | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 3/3 cite) |
 | case_ethyl_corp_v_epa | case-law | releasable | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 9/9 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_forest_guardians_v_fema | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_frazee_v_u_s_forest_serv | case-law | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 3/3 cite) | ['b4', 'b4', 'b4'] (3/3 dec, 1/3 full, 3/3 cite) |
-| case_grasso_v_irs | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 9/9 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 3/3 cite) |
-| case_halpern_v_fbi | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 4/4 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) |
-| case_hanson_v_aid | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 12/12 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_hardy_v_atf | case-law | b2 | ['b2', 'b2', 'b2'] (3/3 dec, 2/3 full, 9/9 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_heights_community_congress_v_va | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_horowitz_v_peace_corps | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 5/5 cite) |
-| case_inc_v_cuomo | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 3/3 full, 9/9 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 5/5 cite) |
-| case_inc_v_epa | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 3/3 cite) |
-| case_inc_v_united_states | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 3/3 cite) |
-| case_kimberlin_v_doj | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 3/3 full, 6/6 cite) |
-| case_kuehnert_v_fbi | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 13/13 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) |
-| case_larson_v_dep_t_of_state | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_lead_indus_ass_n_v_osha | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 5/5 cite) |
-| case_lehrfeld_v_richardson | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 6/6 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 3/3 cite) |
-| case_lesar_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 10/10 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 3/3 cite) |
+| case_forest_guardians_v_fema | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 5/5 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_frazee_v_u_s_forest_serv | case-law | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 3/3 cite) | ['b4', 'b4', 'b4'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_grasso_v_irs | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 9/9 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 3/3 cite) |
+| case_halpern_v_fbi | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 4/4 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 3/3 cite) |
+| case_hanson_v_aid | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 3/3 full, 12/12 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 5/5 cite) |
+| case_hardy_v_atf | case-law | b2 | ['b2', 'b2', 'b2'] (3/3 dec, 1/3 full, 8/8 cite) | ['b2', 'b2', 'b2'] (3/3 dec, 1/3 full, 3/3 cite) |
+| case_heights_community_congress_v_va | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 3/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_horowitz_v_peace_corps | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 3/3 cite) |
+| case_inc_v_cuomo | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 3/3 full, 9/9 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_inc_v_epa | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 4/4 cite) |
+| case_inc_v_united_states | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 3/3 full, 3/3 cite) |
+| case_kimberlin_v_doj | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_kuehnert_v_fbi | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 14/14 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_larson_v_dep_t_of_state | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_lead_indus_ass_n_v_osha | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 9/9 cite) |
+| case_lehrfeld_v_richardson | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 6/6 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_lesar_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 11/11 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) |
 | case_long_v_irs | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 9/9 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 3/3 cite) |
-| case_marzen_v_hhs | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_massey_v_fbi | case-law | b2 | ['b2', 'b2', 'b2'] (3/3 dec, 2/3 full, 6/6 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_mcdonnell_v_united_states | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_marzen_v_hhs | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_massey_v_fbi | case-law | b2 | ['b2', 'b2', 'b2'] (3/3 dec, 1/3 full, 6/6 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 6/6 cite) |
+| case_mcdonnell_v_united_states | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) |
 | case_military_audit_project_v_casey | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_minier_v_cia | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 6/6 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 3/3 full, 3/3 cite) |
-| case_nielsen_v_u_s_bureau_of_land_mgmt | case-law | releasable | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_norwood_v_faa | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 14/14 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_minier_v_cia | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 6/6 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_nielsen_v_u_s_bureau_of_land_mgmt | case-law | releasable | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 3/3 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 2/3 full, 6/6 cite) |
+| case_norwood_v_faa | case-law | b5 | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 11/11 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 3/3 cite) |
 | case_nrdc_v_dod | case-law | b9 | ['b9', 'b9', 'b9'] (3/3 dec, 1/3 full, 6/6 cite) | ['b9', 'b9', 'b9'] (3/3 dec, 3/3 full, 3/3 cite) |
-| case_ortiz_v_hhs | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 9/9 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 5/5 cite) |
-| case_p_l_c_v_united_states | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 7/7 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_physicians_committee_v_nih | case-law | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 1/3 full, 3/3 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 0/0 cite) |
-| case_pub_citizen_v_dep_t_of_state | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) |
-| case_salisbury_v_united_states | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 3/3 full, 3/3 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 3/3 full, 6/6 cite) |
-| case_see_ctr_for_nat_l_sec_studies_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 3/3 full, 9/9 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 9/9 cite) |
-| case_see_nation_magazine_v_u_s_customs_serv | case-law | b6 | ['releasable', 'b6', 'b6'] (2/3 dec, 1/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_see_sladek_v_bensinger | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 6/6 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 0/0 cite) |
-| case_taylor_v_dep_t_of_the_army | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 12/12 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_texas_v_icc | case-law | b5 | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 6/6 cite) | ['b5', 'b5', 'b5'] (3/3 dec, 1/3 full, 6/6 cite) |
-| case_times_publ_g_co_v_u_s_dep_t_of_commerce | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 6/6 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_ortiz_v_hhs | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 1/3 full, 9/9 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 3/3 full, 3/3 cite) |
+| case_p_l_c_v_united_states | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 6/6 cite) |
+| case_physicians_committee_v_nih | case-law | releasable | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 3/3 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 2/3 full, 0/0 cite) |
+| case_pub_citizen_v_dep_t_of_state | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 6/6 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_salisbury_v_united_states | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 3/3 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_see_ctr_for_nat_l_sec_studies_v_doj | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 3/3 full, 9/9 cite) | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 3/3 cite) |
+| case_see_nation_magazine_v_u_s_customs_serv | case-law | b6 | ['b6', 'b6', 'b6'] (3/3 dec, 2/3 full, 9/9 cite) | ['b6', 'b6', 'b6'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_see_sladek_v_bensinger | case-law | b7 | ['b7', 'b7', 'b7'] (3/3 dec, 2/3 full, 6/6 cite) | ['releasable', 'releasable', 'releasable'] (3/3 dec, 3/3 full, 0/0 cite) |
+| case_taylor_v_dep_t_of_the_army | case-law | b1 | ['b1', 'b1', 'b1'] (3/3 dec, 2/3 full, 11/11 cite) | ['b1', 'b1', 'b1'] (3/3 dec, 1/3 full, 6/6 cite) |
+| case_texas_v_icc | case-law | b5 | ['releasable', 'b5', 'releasable'] (2/3 dec, 1/3 full, 6/6 cite) | ['releasable', 'releasable', 'b5'] (2/3 dec, 1/3 full, 1/1 cite) |
+| case_times_publ_g_co_v_u_s_dep_t_of_commerce | case-law | b3 | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 6/6 cite) | ['b3', 'b3', 'b3'] (3/3 dec, 1/3 full, 3/3 cite) |
 
 ## Totals
 
-- **RAG**: correct 191/216 · decision-det 215/216 · full-det 114/216 · citation faithfulness 515/515 · avg 2.6s per run
-- **Pearl**: correct 181/216 · decision-det 215/216 · full-det 131/216 · citation faithfulness 313/313 · avg 0.0s per run
+- **RAG**: correct 193/216 · decision-det 215/216 · full-det 116/216 · citation faithfulness 513/513 · avg 3.2s per run
+- **Pearl**: correct 184/216 · decision-det 215/216 · full-det 121/216 · citation faithfulness 305/305 · avg 0.0s per run
 
 ## Notes
 

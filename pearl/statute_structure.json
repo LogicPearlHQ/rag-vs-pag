@@ -47,11 +47,11 @@
   "b5": {
     "groups": [
       {
-        "features": ["inter_or_intra_agency_memo", "pre_decisional_deliberative"],
+        "features": ["inter_or_intra_agency_memo", "pre_decisional_deliberative", "other_party_is_federal_agency_or_consultant"],
         "quote": "inter- agency or intra- agency memorandums or letters that would not be available by law to a party other than an agency in litigation with the agency"
       },
       {
-        "features": ["inter_or_intra_agency_memo", "attorney_work_product_or_privileged"],
+        "features": ["inter_or_intra_agency_memo", "attorney_work_product_or_privileged", "other_party_is_federal_agency_or_consultant"],
         "quote": "inter- agency or intra- agency memorandums or letters that would not be available by law to a party other than an agency in litigation with the agency"
       }
     ]
@@ -136,6 +136,14 @@
         "cite": "5 U.S.C. § 552(b)(7)",
         "description": "Law enforcement record whose production would not cause any of the six (A)-(F) harms",
         "quote": "records or information compiled for law enforcement purposes, but only to the extent that the production of such law enforcement records or information"
+      },
+      {
+        "features": ["inter_or_intra_agency_memo", "pre_decisional_deliberative"],
+        "cite": "Dep't of Interior v. Klamath, 532 U.S. 1 (2001); DOJ FOIA Guide, Exemption 5, p. 5",
+        "description": "Klamath: pre-decisional deliberative communications with non-agency parties (tribes) whose own adverse interests prevent them from qualifying as agency or consultant are outside (b)(5).",
+        "quote": "the threshold of Exemption 5 did not encompass communications between the Department of the Interior and several Indian tribes",
+        "source_doc": "doj_guide_exemption_5",
+        "source_page": 5
       }
     ]
   }

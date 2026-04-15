@@ -1,5 +1,14 @@
 # RAG vs PAG on FOIA Exemption Classification — Findings
 
+> **Note on versions.** This document was written incrementally as the
+> eval grew from N=15 and three pipelines to N=72 and five pipelines,
+> with a Klamath case-law feature added after the initial run. The
+> current headline numbers live in [`README.md`](../README.md). The
+> detail below — every prompt verbatim, the architecture of each
+> pipeline, the three captured citation-fabrication examples, and the
+> Klamath four-pipeline study — is still accurate and not reproduced
+> in the README.
+
 > **PAG = Pearl-Augmented Generation.** RAG extends an LLM with *what's
 > retrieved from documents* (fetch passages → synthesize). PAG extends
 > it with *a reviewed, deterministic rule artifact* (extract features →
@@ -19,26 +28,32 @@
 
 ## TL;DR
 
-Same corpus, same LLM, same 15 scenarios, three backends: classical RAG,
-LogicPearl with LLM feature extraction, and LogicPearl with keyword feature
-extraction.
+The current headline numbers live in [`README.md`](../README.md)'s
+table — 72 scenarios × 3 reruns × 5 pipelines. This document's
+original TL;DR was from the N=15 first capture; preserved below for
+provenance and because the three captured citation-fabrication
+examples (Section *Failure modes*) come from that run. The overall
+findings didn't reverse at scale — the RAG fabrication rate actually
+got worse (from 74% faithful at N=15 to 58% at N=72), which is the
+opposite of what a skeptic would predict.
 
-| | **RAG** | **PAG — LLM extract** | **PAG — keyword extract** |
+**Original N=15, three-pipeline snapshot (preserved):**
+
+| | RAG | PAG — LLM extract | PAG — keyword extract |
 |---|---|---|---|
 | Correct | 45 / 45 (100%) | 42 / 45 (93%) | 42 / 45 (93%) |
 | Decision determinism | 45 / 45 | 45 / 45 | 45 / 45 |
-| **Byte-identical full output** | 25 / 45 (56%) | 20 / 45 (44%) | **45 / 45 (100%)** |
-| **Citation faithfulness** | **70 / 94 (74%)** | **57 / 57 (100%)** | **72 / 72 (100%)** |
-| LLM calls per scenario | 1 | 2 | **0** |
-| Avg latency | 3.7 s | 3.8 s | **<1 ms** |
-| Marginal cost per run | ~$0.01 | ~$0.005 | **$0** |
+| Byte-identical full output | 25 / 45 (56%) | 20 / 45 (44%) | 45 / 45 (100%) |
+| Citation faithfulness | 70 / 94 (74%) | 57 / 57 (100%) | 72 / 72 (100%) |
+| LLM calls per scenario | 1 | 2 | 0 |
+| Avg latency | 3.7 s | 3.8 s | <1 ms |
+| Marginal cost per run | ~$0.01 | ~$0.005 | $0 |
 
-**The separator is not correctness.** Correctness is comparable on clean
-benchmarks. The separators are **citation faithfulness** and **full-output
-determinism** — and on both, LogicPearl paths are 100% by construction, while
-RAG's 74% faithful and 56% full-det are LLM-bounded. The keyword-extractor
-pearl achieves all of this with **zero LLM calls, zero API spend, and sub-
-millisecond latency**, end to end.
+At that point the story read as *"PAG fixes RAG's citation problem."*
+Adding two more control pipelines at N=72 — RAG-ChunkLookup (Anthropic
+Citations pattern, no pearl) and PAG-R (RAG reasoning + pearl-dict
+cites) — sharpened the framing. See the README for the five-pipeline
+table and the *"what does LogicPearl actually add?"* section.
 
 ---
 

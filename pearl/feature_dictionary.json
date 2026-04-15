@@ -102,5 +102,11 @@
     "label": "Record is already in the public domain",
     "cite": "DOJ FOIA Guide, Procedural Requirements",
     "keywords": ["already public", "publicly available", "public domain", "published", "public website", "already posted", "made publicly available"]
+  },
+  "other_party_is_federal_agency_or_consultant": {
+    "label": "Communication counterparty is another federal agency or a bona fide agency-solicited consultant (not an outside party with adverse interests)",
+    "cite": "Dep't of Interior v. Klamath Water Users Protective Ass'n, 532 U.S. 1 (2001)",
+    "keywords": ["intra-agency", "intra- agency", "within the agency", "between agencies", "another federal agency", "another agency", "agency staff", "among agency staff", "among staff", "policy staff", "between federal agencies", "retained consultant", "agency-solicited consultant"],
+    "negative_keywords": ["indian tribe", "indian tribes", "tribe", "tribes", "tribal", "private party", "private company", "outside party", "adverse interest", "adverse interests", "their own interests", "own interests", "seeking a government benefit", "seeking government benefit"]
   }
 }

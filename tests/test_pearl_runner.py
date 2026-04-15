@@ -23,6 +23,7 @@ def test_run_pearl_routes_b5_scenario():
     features = {k: False for k in FD}
     features["inter_or_intra_agency_memo"] = True
     features["pre_decisional_deliberative"] = True
+    features["other_party_is_federal_agency_or_consultant"] = True
     out = run_pearl(features)
     action = out.get("action") or out.get("decision")
     assert action == "b5", out
@@ -59,6 +60,7 @@ def test_engine_reports_not_defaulted_when_rule_fires():
     features = {k: False for k in FD}
     features["inter_or_intra_agency_memo"] = True
     features["pre_decisional_deliberative"] = True
+    features["other_party_is_federal_agency_or_consultant"] = True
     out = run_pearl(features)
     assert out.get("defaulted") is False, out
     assert out.get("selected_rules"), out

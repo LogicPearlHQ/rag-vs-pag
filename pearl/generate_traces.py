@@ -89,10 +89,29 @@ def extract_exemption_paragraphs(statute_text: str) -> dict[int, str]:
     return out
 
 
+def _doj_guide_page_text(doc_id: str, page: int) -> str:
+    """Load the DOJ Guide PDF page for source_doc-scoped quote verification."""
+    from pypdf import PdfReader
+
+    path = PROJECT / "corpus" / "raw" / f"{doc_id}.bin"
+    if not path.exists():
+        return ""
+    reader = PdfReader(str(path))
+    if page < 1 or page > len(reader.pages):
+        return ""
+    return reader.pages[page - 1].extract_text() or ""
+
+
 def verify_structure_against_statute(
     structure: dict, statute_text: str, fd: dict
 ) -> list[str]:
-    """Return a list of verification error strings; empty means OK."""
+    """Return a list of verification error strings; empty means OK.
+
+    Quotes default to being verified against the statute. Entries with
+    `source_doc` + `source_page` are verified against that DOJ Guide PDF
+    page instead — used for case-law refinements (e.g., Klamath's
+    narrowing of (b)(5), sourced from DOJ Guide Exemption 5 p. 5).
+    """
     normalized_statute = _norm(statute_text)
     errors: list[str] = []
     for key, entry in structure.items():
@@ -107,7 +126,20 @@ def verify_structure_against_statute(
                 if not quote:
                     errors.append(f"releasable_patterns[{i}]: empty quote")
                     continue
-                if _norm(quote) not in normalized_statute:
+                src_doc = p.get("source_doc")
+                src_page = p.get("source_page")
+                if src_doc:
+                    haystack = _norm(_doj_guide_page_text(src_doc, src_page))
+                    if not haystack:
+                        errors.append(
+                            f"releasable_patterns[{i}]: source_doc {src_doc!r} not fetched (run `make fetch`)"
+                        )
+                        continue
+                    if _norm(quote) not in haystack:
+                        errors.append(
+                            f"releasable_patterns[{i}]: quote not found in {src_doc} p.{src_page} (drift)"
+                        )
+                elif _norm(quote) not in normalized_statute:
                     errors.append(
                         f"releasable_patterns[{i}]: quote not found in statute text (drift or typo)"
                     )

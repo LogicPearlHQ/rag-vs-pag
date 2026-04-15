@@ -77,6 +77,7 @@ def test_b1_scenario_routes_to_b1():
         "financial_institution_examination_report": False,
         "geological_well_data": False,
         "record_is_otherwise_public": False,
+        "other_party_is_federal_agency_or_consultant": False,
     }
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
         json.dump(features, f)
