@@ -62,7 +62,7 @@ EXTRACT_SYSTEM = """You are a FOIA analyst performing structured feature extract
 Given a free-text record description, set each feature TRUE only if the description clearly states or directly implies it. Err on the side of FALSE for ambiguous cases — the artifact will reach its conclusion on whatever features you mark, and false positives cause wrong answers. Do not speculate beyond the text."""
 
 
-EXPLAIN_SYSTEM = """You are explaining a deterministic decision produced by a reviewed policy artifact.
+EXPLAIN_SYSTEM = """You are explaining a deterministic decision produced by a reviewed rule artifact.
 
 The artifact has already decided the exemption. Your job is to explain its decision in plain English, citing authorities drawn from the artifact's own rule output. You MUST:
   - Accept the artifact's action verbatim.

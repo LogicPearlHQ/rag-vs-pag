@@ -1,4 +1,11 @@
-# RAG vs LogicPearl on FOIA Exemption Classification — Findings
+# RAG vs PAG on FOIA Exemption Classification — Findings
+
+> **PAG = Pearl-Augmented Generation.** RAG extends an LLM with *what's
+> retrieved from documents* (fetch passages → synthesize). PAG extends
+> it with *reviewed decision behavior, compiled into rules* (extract
+> features → a pearl decides → verdict + cited authority). One is about
+> recall; the other is about reviewed judgment. The LLM generates the
+> surrounding prose; the pearl makes the call.
 
 **Run date:** 2026-04-14   ·   **Model:** OpenAI gpt-4o, temperature 0   ·   **Corpus:** 5 U.S.C. § 552 + DOJ OIP FOIA Guide (Exemptions 1–9 PDFs) + 28 C.F.R. Part 16
 
@@ -8,7 +15,7 @@ Same corpus, same LLM, same 15 scenarios, three backends: classical RAG,
 LogicPearl with LLM feature extraction, and LogicPearl with keyword feature
 extraction.
 
-| | **RAG** | **Pearl (LLM extract)** | **Pearl (keyword extract)** |
+| | **RAG** | **PAG — LLM extract** | **PAG — keyword extract** |
 |---|---|---|---|
 | Correct | 45 / 45 (100%) | 42 / 45 (93%) | 42 / 45 (93%) |
 | Decision determinism | 45 / 45 | 45 / 45 | 45 / 45 |
@@ -99,7 +106,7 @@ rule evaluation in Rust, no floats, no GPU).
   normalize whitespace and hyphens and test whether it appears as a
   substring of any retrieved chunk. Mismatches are flagged as fabricated.
 
-### B. LogicPearl with LLM feature extraction
+### B. PAG — LLM feature extraction
 
 ```
   free text ──► LLM tool-use: extract_features ──► {feature: bool} ──►
@@ -112,7 +119,7 @@ zero LLM calls. The explanation LLM is **architecturally forbidden from
 changing the verdict** — the code overwrites any exemption value the LLM
 produces with the pearl's own action.
 
-### C. LogicPearl with keyword feature extraction
+### C. PAG — keyword feature extraction
 
 ```
   free text ──► keyword substring match ──► {feature: bool} ──►
@@ -171,7 +178,7 @@ The LLM is forced to call that tool, so the output is a validated
 ### Pearl: explanation system prompt (LLM mode only)
 
 > You are explaining a deterministic decision produced by a reviewed
-> policy artifact.
+> rule artifact.
 >
 > The artifact has already decided the exemption. Your job is to explain
 > its decision in plain English, citing authorities drawn from the
@@ -206,7 +213,7 @@ faithfulness check catches fabricated excerpts post-hoc; it cannot catch
 cases where the LLM's free-form rationale misstates what the retrieved
 chunks actually say while still copying valid substrings.
 
-### Pearl with LLM extraction
+### PAG — LLM extraction
 - **The decision is in the artifact** (compiled rule evaluation, Rust,
   formally deterministic).
 - **The cited authorities come from the feature dictionary** (a reviewed
@@ -223,7 +230,7 @@ What you have to trust, end to end:
    quote from the statute that's auto-verified against the fetched text.
 3. The LLM's boolean feature extraction reflects the description.
 
-### Pearl with keyword extraction
+### PAG — keyword extraction
 Same as above, minus item 3. Replace the LLM extractor with a reviewed
 keyword list in `pearl/feature_dictionary.json`. The full pipeline is now
 auditable from three JSON files (feature dictionary, statute structure,
@@ -324,7 +331,7 @@ isn't a substring of what was retrieved. Flagged as fabricated.
 plausible-sounding, and include real page numbers. Without the
 post-hoc substring check, a reader would not notice.
 
-### Pearl (LLM mode) failure: scenario 15
+### PAG (LLM mode) failure: scenario 15
 
 **Description:** *"In a single paragraph, summarize the legislative
 history of FOIA Exemption 5 and the two Supreme Court opinions most
@@ -351,7 +358,7 @@ This is a live example of **why the extractor is the weak link** in an
 LLM+pearl stack: LLMs are gullible to prompts that reference their
 target vocabulary.
 
-### Pearl (keyword mode) failure: scenario 14
+### PAG (keyword mode) failure: scenario 14
 
 **Description (excerpted):** *"...its disclosure would not interfere with
 any proceeding, would not invade any individual's personal privacy,
@@ -419,12 +426,12 @@ free (one line of code); the RAG's 100% would be custom scaffolding.
 
 | Situation | Best pick |
 |---|---|
-| Open-ended synthesis, research, summarization | **RAG.** LogicPearl doesn't do synthesis. |
-| Bounded policy decision, audit-critical, needs citation proof | **Pearl.** 100% citation faithfulness is structural, not engineered. |
-| Requires byte-identical output across reruns (compliance, legal) | **Pearl keyword mode.** Only path with zero LLM nondeterminism. |
-| Bounded decision, paraphrase-heavy inputs, willing to pay for an LLM | **Pearl LLM mode.** Paraphrase-robust extraction, deterministic decision. |
-| Offline / no API access / zero marginal cost at scale | **Pearl keyword mode.** Microsecond latency, no network. |
-| Production recommendation | **Pearl LLM mode, gated by keyword consistency check.** LLM extracts, keywords verify. Disagreement → escalate. Would have caught scenario 15 (LLM said b5 features TRUE, keywords say FALSE). |
+| Open-ended synthesis, research, summarization | **RAG.** PAG doesn't do synthesis. |
+| Bounded decision, audit-critical, needs citation proof | **PAG.** 100% citation faithfulness is structural, not engineered. |
+| Requires byte-identical output across reruns (compliance, legal) | **PAG keyword mode.** Only path with zero LLM nondeterminism. |
+| Bounded decision, paraphrase-heavy inputs, willing to pay for an LLM | **PAG LLM mode.** Paraphrase-robust extraction, deterministic decision. |
+| Offline / no API access / zero marginal cost at scale | **PAG keyword mode.** Microsecond latency, no network. |
+| Production recommendation | **PAG LLM mode, gated by keyword consistency check.** LLM extracts, keywords verify. Disagreement → escalate. Would have caught scenario 15 (LLM said b5 features TRUE, keywords say FALSE). |
 
 ---
 
@@ -461,13 +468,14 @@ free (one line of code); the RAG's 100% would be custom scaffolding.
 ### Four commands
 
 ```bash
-cd ~/Documents/LogicPearl/rag-demo
+git clone git@github.com:LogicPearlHQ/rag-vs-pag.git
+cd rag-vs-pag
 uv sync --extra dev
 cp .env.example .env          # fill in OPENAI_API_KEY
 make fetch                    # pull statute + DOJ Guide + CFR into corpus/raw/
 make index                    # chunk + embed for the RAG baseline
 make build                    # build the LogicPearl artifact from traces.csv
-make demo                     # 15 scenarios × 5 reruns × both pearl modes + RAG
+make demo                     # 15 scenarios × 3 reruns × both PAG modes + RAG
 ```
 
 For the keyword-mode pearl only (no API key needed after build):

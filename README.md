@@ -1,12 +1,19 @@
-# rag-demo — Replacing RAG With LogicPearl For An LLM
+# rag-vs-pag — RAG vs Pearl-Augmented Generation
 
 An end-to-end demo on 15 FOIA record-classification scenarios against real
 federal primary sources (5 U.S.C. § 552, DOJ OIP FOIA Guide, 28 C.F.R.
 Part 16). Same LLM, same corpus, three backends compared side by side.
 
+**PAG = Pearl-Augmented Generation.** RAG extends an LLM with *what's
+retrieved from documents* (fetch passages → synthesize). PAG extends it
+with *reviewed decision behavior, compiled into rules* (extract features
+→ a pearl decides → verdict + cited authority). One is about recall;
+the other is about reviewed judgment. The LLM generates the surrounding
+prose; the pearl makes the call.
+
 ## Results
 
-| | **RAG** | **Pearl (LLM extract)** | **Pearl (keyword extract)** |
+| | **RAG** | **PAG — LLM extract** | **PAG — keyword extract** |
 |---|---|---|---|
 | Correct | 45 / 45 (100%) | 42 / 45 (93%) | 42 / 45 (93%) |
 | **Byte-identical full output** | 25 / 45 (56%) | 20 / 45 (44%) | **45 / 45 (100%)** |
@@ -16,10 +23,10 @@ Part 16). Same LLM, same corpus, three backends compared side by side.
 | Marginal cost per run | ~$0.01 | ~$0.005 | **$0** |
 
 Correctness is comparable on this benchmark. The separators are
-**citation faithfulness** (LogicPearl paths are 100% by construction;
-RAG's 74% is LLM-bounded) and **full-output reproducibility** (only the
-keyword-mode pearl achieves 100% byte-identical reruns, because there is
-no LLM in its pipeline to drift).
+**citation faithfulness** (PAG paths are 100% by construction; RAG's 74%
+is LLM-bounded) and **full-output reproducibility** (only keyword-extract
+PAG achieves 100% byte-identical reruns, because there is no LLM in its
+pipeline to drift).
 
 **Full writeup with prompts, failure modes, captured output, and
 fairness notes:** [`docs/findings.md`](docs/findings.md).
@@ -29,23 +36,23 @@ fairness notes:** [`docs/findings.md`](docs/findings.md).
 Three pipelines over the same FOIA corpus:
 
 ```
-RAG:          text ──► retrieve 8 chunks ──► LLM synthesizes answer + cites
+RAG:            text ──► retrieve 8 chunks ──► LLM synthesizes answer + cites
 
-Pearl (LLM):  text ──► LLM extracts {feature: bool} ──►
-              ──► logicpearl run (Rust engine, no LLM) ──► decision ──►
-              ──► LLM writes prose (cannot change the verdict)
+PAG (LLM ext):  text ──► LLM extracts {feature: bool} ──►
+                ──► logicpearl run (Rust engine, no LLM) ──► decision ──►
+                ──► LLM writes prose (cannot change the verdict)
 
-Pearl (kw):   text ──► keyword substring match ──►
-              ──► logicpearl run (Rust engine, no LLM) ──► decision ──►
-              ──► Python template rationale
+PAG (keyword):  text ──► keyword substring match ──►
+                ──► logicpearl run (Rust engine, no LLM) ──► decision ──►
+                ──► Python template rationale
 ```
 
-The LogicPearl engine makes **zero LLM calls** — it's a compiled rule
-evaluator in Rust (~10 ms per scenario). The demo's wrapper around it
-uses an LLM to normalize free text into a feature vector (LLM mode) or
-a keyword extractor (keyword mode). In both cases, the pearl's verdict
-is authoritative — the code architecturally prevents any LLM from
-overriding it.
+The LogicPearl engine at the heart of PAG makes **zero LLM calls** —
+it's a compiled rule evaluator in Rust (~10 ms per scenario). The
+demo's wrapper around it uses either an LLM or a keyword matcher to
+normalize free text into a feature vector. In both modes, the pearl's
+verdict is authoritative — the code architecturally prevents any LLM
+from overriding it.
 
 ## Trust boundary
 
@@ -84,7 +91,7 @@ keyword-mode pearl runs offline after build — no API key needed.
 LP_LLM_PROVIDER=openai          # or anthropic | ollama
 LP_LLM_MODEL=gpt-4o
 LP_EMBEDDING_PROVIDER=openai    # or sentence_transformers (fully offline)
-LP_PEARL_EXTRACTOR=llm          # or keyword (fully LLM-free pearl)
+LP_PEARL_EXTRACTOR=llm          # or keyword (fully LLM-free PAG)
 ```
 
 ## Documentation
