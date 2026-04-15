@@ -1,123 +1,117 @@
 # rag-demo — Replacing RAG With LogicPearl For An LLM
 
-An end-to-end demo: same FOIA scenarios, same LLM, same corpus, two control
-flows. A strong RAG baseline and a deterministic LogicPearl artifact, both
-asked to classify real-ish FOIA record descriptions under 5 U.S.C. § 552(b).
+An end-to-end demo on 15 FOIA record-classification scenarios against real
+federal primary sources (5 U.S.C. § 552, DOJ OIP FOIA Guide, 28 C.F.R.
+Part 16). Same LLM, same corpus, three backends compared side by side.
 
-The RAG path retrieves chunks of the statute + DOJ OIP FOIA Guide + 28
-C.F.R. Part 16 and asks the LLM to synthesize an answer with citations. The
-LogicPearl path uses the LLM only to normalize a free-text description
-into structured features; the decision itself is made by a reviewed pearl
-artifact, and the LLM cannot override it.
+## Results
 
-The comparison harness measures **correctness**, **determinism** (byte-
-identical outputs across reruns), **citation faithfulness** (does each
-cited excerpt actually appear in the source?), and latency.
+| | **RAG** | **Pearl (LLM extract)** | **Pearl (keyword extract)** |
+|---|---|---|---|
+| Correct | 45 / 45 (100%) | 42 / 45 (93%) | 42 / 45 (93%) |
+| **Byte-identical full output** | 25 / 45 (56%) | 20 / 45 (44%) | **45 / 45 (100%)** |
+| **Citation faithfulness** | **70 / 94 (74%)** | **57 / 57 (100%)** | **72 / 72 (100%)** |
+| LLM calls per scenario | 1 | 2 | **0** |
+| Avg latency | 3.7 s | 3.8 s | **<1 ms** |
+| Marginal cost per run | ~$0.01 | ~$0.005 | **$0** |
 
-Full design: [`docs/plans/2026-04-14-rag-demo-design.md`](docs/plans/2026-04-14-rag-demo-design.md).
+Correctness is comparable on this benchmark. The separators are
+**citation faithfulness** (LogicPearl paths are 100% by construction;
+RAG's 74% is LLM-bounded) and **full-output reproducibility** (only the
+keyword-mode pearl achieves 100% byte-identical reruns, because there is
+no LLM in its pipeline to drift).
+
+**Full writeup with prompts, failure modes, captured output, and
+fairness notes:** [`docs/findings.md`](docs/findings.md).
+
+## How it works
+
+Three pipelines over the same FOIA corpus:
+
+```
+RAG:          text ──► retrieve 8 chunks ──► LLM synthesizes answer + cites
+
+Pearl (LLM):  text ──► LLM extracts {feature: bool} ──►
+              ──► logicpearl run (Rust engine, no LLM) ──► decision ──►
+              ──► LLM writes prose (cannot change the verdict)
+
+Pearl (kw):   text ──► keyword substring match ──►
+              ──► logicpearl run (Rust engine, no LLM) ──► decision ──►
+              ──► Python template rationale
+```
+
+The LogicPearl engine makes **zero LLM calls** — it's a compiled rule
+evaluator in Rust (~10 ms per scenario). The demo's wrapper around it
+uses an LLM to normalize free text into a feature vector (LLM mode) or
+a keyword extractor (keyword mode). In both cases, the pearl's verdict
+is authoritative — the code architecturally prevents any LLM from
+overriding it.
+
+## Trust boundary
+
+The pearl's trust boundary is two small JSON files:
+
+- [`pearl/feature_dictionary.json`](pearl/feature_dictionary.json) —
+  20 features, each with a statute cite and (optional) keyword list.
+- [`pearl/statute_structure.json`](pearl/statute_structure.json) —
+  element groups per exemption, each carrying a **verbatim quote from
+  § 552(b)**. A test asserts every quote is a substring of the fetched
+  statute; drift fails fast.
+
+The traces that train the pearl are then generated from those files by
+[`pearl/generate_traces.py`](pearl/generate_traces.py) — no row is
+hand-typed. The audit artifact
+[`pearl/traces_review.md`](pearl/traces_review.md) renders every
+exemplar next to the quoted statute paragraph it was derived from.
 
 ## Quick start
 
 ```bash
 uv sync --extra dev
-cp .env.example .env        # fill in OPENAI_API_KEY (default provider)
-make fetch                  # download statute + DOJ Guide + CFR into corpus/raw/
-make index                  # chunk + embed for the RAG baseline
-make build                  # build the LogicPearl artifact from traces.csv
-make smoke                  # quick one-scenario sanity run
-make demo                   # full 15-scenario x 5-repeat comparison
-make test                   # unit + integration suite
+cp .env.example .env            # OPENAI_API_KEY
+make fetch                      # pull the corpus (11 docs, sha256-verified)
+make index                      # chunk + embed for the RAG baseline
+make build                      # build the LogicPearl artifact
+make demo                       # full 15 × 5 × both sides comparison
 ```
 
-See [`transcripts/`](transcripts/) for checked-in runs.
+Captured sample runs live in [`transcripts/`](transcripts/). The
+keyword-mode pearl runs offline after build — no API key needed.
 
 ## Pluggable LLM
 
-Environment variables control the provider:
-
 ```bash
-LP_LLM_PROVIDER=openai      # or anthropic | ollama
+LP_LLM_PROVIDER=openai          # or anthropic | ollama
 LP_LLM_MODEL=gpt-4o
-LP_EMBEDDING_PROVIDER=openai  # or sentence_transformers (fully offline)
-LP_EMBEDDING_MODEL=text-embedding-3-small
+LP_EMBEDDING_PROVIDER=openai    # or sentence_transformers (fully offline)
+LP_PEARL_EXTRACTOR=llm          # or keyword (fully LLM-free pearl)
 ```
 
-## Trust boundary: why the pearl's traces are credible
+## Documentation
 
-The LogicPearl pipeline makes one claim: the pearl's decision is the
-deterministic application of rules learned from a **reviewed** trace set.
-The trace set is not hand-typed — it's generated by
-[`pearl/generate_traces.py`](pearl/generate_traces.py) from three inputs:
-
-1. The fetched statute text at `corpus/raw/5_usc_552.bin`, sha256-verified
-   against `corpus/sources.toml`.
-2. [`pearl/feature_dictionary.json`](pearl/feature_dictionary.json) — names
-   20 features, each with a pinpoint cite into § 552(b).
-3. [`pearl/statute_structure.json`](pearl/statute_structure.json) — declares
-   the element groups for each exemption, **each group carrying a verbatim
-   quote from the statute**. A test asserts every quote is a substring of
-   the fetched statute; drift fails fast.
-
-The audit surface is: read those two small JSON files, check every cite
-and quote against the statute. That's the trust boundary — not 30+ CSV
-rows, and not this `README.md`.
-
-The auto-generated [`pearl/traces_review.md`](pearl/traces_review.md) shows
-each exemplar next to the verbatim statute paragraph it was derived from.
-
-## Fairness guardrails (baked in)
-
-- Same LLM, same temperature (0), same scenarios, same corpus both sides.
-- RAG uses **hybrid retrieval** (BM25 + dense) → **cross-encoder rerank**
-  → top-8, not a naive similarity search.
-- Structure-aware chunking: statute by subsection, CFR by section,
-  DOJ Guide by page.
-- RAG's system prompt requires citations and a refusal path; it is not set
-  up to be weak.
-- Includes at least one `rag-favored` scenario (#15) — an open-ended
-  synthesis task the pearl is *supposed* to lose on.
-- Citation faithfulness is auto-checked for both sides.
-
-## What gets measured
-
-For each of 15 scenarios run N times on each side:
-
-- **Correctness** against the scenario's gold `expected.exemption`.
-- **Determinism** — count of byte-identical outputs across reruns.
-- **Citation faithfulness** — for RAG, a normalized-substring match
-  against the retrieved chunks; for the pearl, cites come from its own
-  feature dictionary by construction.
-- **Latency** — per-stage (retrieve / LLM for RAG; extract / pearl /
-  explain for the pearl side).
+- [`docs/findings.md`](docs/findings.md) — results, prompts, failure
+  modes with captured output, fairness notes, when-to-use-which.
+- [`docs/plans/2026-04-14-rag-demo-design.md`](docs/plans/2026-04-14-rag-demo-design.md)
+  — approved design brief.
+- [`docs/plans/2026-04-14-rag-demo-implementation.md`](docs/plans/2026-04-14-rag-demo-implementation.md)
+  — 23-task implementation plan used during the build.
 
 ## Layout
 
 ```text
 corpus/              # fetched federal docs; sha256-verified
-ragdemo/             # shared libs: llm/, corpus/, scenarios/
+ragdemo/             # shared libs: llm, corpus, scenarios
 rag/                 # RAG indexer + runner
-pearl/               # LogicPearl traces, generator, build.sh, runner
+pearl/               # LogicPearl traces, generator, build.sh, runner,
+                     # keyword extractor, feature dictionary, structure
 scenarios/           # 15 FOIA record descriptions
 transcripts/         # captured demo runs
 compare.py           # side-by-side driver
+docs/                # design, implementation plan, findings
 ```
 
 ## Limitations
 
-- Corpus is statute + DOJ Guide chapters + 28 C.F.R. Part 16.
-  Case opinions (NLRB v. Sears, Reporters Committee, Klamath, etc.) are
-  left out because CourtListener's API now requires an auth token;
-  `corpus/sources.toml` documents how to add them.
-- The LogicPearl artifact is learned from **statute-derived** exemplars.
-  Real FOIA adjudication involves case-law interpretation (e.g., the
-  "foreseeable harm" standard, segregability doctrine) that this
-  pedagogical trace set does not encode.
-- This is a demo, not legal advice.
-
-## Where each skill applies
-
-Building this repo exercised `superpowers-extended-cc:brainstorming`,
-`superpowers-extended-cc:writing-plans`, and
-`superpowers-extended-cc:subagent-driven-development` (the pragmatic
-hybrid variant). The LLM layer follows the `claude-api` skill's guidance
-on prompt caching and tool-use JSON enforcement.
+Pedagogical corpus (no case law), statute-derived trace set (no case-law
+nuance), 15 scenarios, not legal advice. See the *Limitations* section
+of [`docs/findings.md`](docs/findings.md) for details.
