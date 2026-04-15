@@ -27,8 +27,6 @@ from rich.table import Table
 
 from ragdemo.llm import LLMConfig
 from ragdemo.scenarios import Scenario, load_scenarios
-from pearl.pearl import answer as pearl_answer
-from rag.rag import answer as rag_answer
 
 ROOT = Path(__file__).parent
 
@@ -268,9 +266,37 @@ def main():
         choices=["llm", "keyword"],
         help="pearl feature-extraction mode (llm or fully-deterministic keyword)",
     )
+    p.add_argument(
+        "--rag-impl",
+        default="baseline",
+        choices=["baseline", "chunklookup"],
+        help="rag/rag.py (baseline — LLM writes excerpts) or rag/rag_chunklookup.py "
+             "(chunk-ID indirection — Anthropic Citations pattern)",
+    )
+    p.add_argument(
+        "--pearl-impl",
+        default="standard",
+        choices=["standard", "r"],
+        help="pearl/pearl.py (standard — pearl decides) or pearl/pearl_r.py "
+             "(PAG-R — RAG decides, pearl dict provides cites)",
+    )
     args = p.parse_args()
 
     cfg = LLMConfig(provider=args.provider, model=args.model)
+
+    # Dispatch to the selected backends.
+    if args.rag_impl == "chunklookup":
+        from rag.rag_chunklookup import answer as rag_answer
+    else:
+        from rag.rag import answer as rag_answer
+    if args.pearl_impl == "r":
+        from pearl.pearl_r import answer as _pearl_r_answer
+
+        def pearl_answer(path, cfg, extractor="llm"):  # signature compat
+            return _pearl_r_answer(path, cfg)
+    else:
+        from pearl.pearl import answer as pearl_answer
+
     scs = load_scenarios(ROOT / "scenarios")
     if args.only:
         scs = [s for s in scs if args.only in s.id]
@@ -332,7 +358,14 @@ def main():
     transcripts_dir = ROOT / "transcripts"
     transcripts_dir.mkdir(exist_ok=True)
     ts = time.strftime("%Y-%m-%d")
-    suffix = f"-{args.pearl_extractor}" if args.pearl_extractor != "llm" else ""
+    suffix_parts = []
+    if args.pearl_extractor != "llm":
+        suffix_parts.append(args.pearl_extractor)
+    if args.rag_impl != "baseline":
+        suffix_parts.append(f"rag-{args.rag_impl}")
+    if args.pearl_impl != "standard":
+        suffix_parts.append(f"pearl-{args.pearl_impl}")
+    suffix = "-" + "-".join(suffix_parts) if suffix_parts else ""
     md_path = transcripts_dir / f"{ts}-{args.provider}{suffix}.md"
     json_path = transcripts_dir / f"{ts}-{args.provider}{suffix}.manifest.json"
     md_path.write_text(render_transcript_md(summaries, manifest))
