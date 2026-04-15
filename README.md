@@ -6,9 +6,9 @@ Part 16). Same LLM, same corpus, three backends compared side by side.
 
 **PAG = Pearl-Augmented Generation.** RAG extends an LLM with *what's
 retrieved from documents* (fetch passages → synthesize). PAG extends it
-with *reviewed decision behavior, compiled into rules* (extract features
-→ a pearl decides → verdict + cited authority). One is about recall;
-the other is about reviewed judgment. The LLM generates the surrounding
+with *a reviewed, deterministic rule artifact* (extract features →
+pearl decides → verdict + cited authority). One adds recall to an LLM;
+the other adds reviewed judgment. The LLM generates the surrounding
 prose; the pearl makes the call.
 
 ## Results

@@ -2,10 +2,18 @@
 
 > **PAG = Pearl-Augmented Generation.** RAG extends an LLM with *what's
 > retrieved from documents* (fetch passages → synthesize). PAG extends
-> it with *reviewed decision behavior, compiled into rules* (extract
-> features → a pearl decides → verdict + cited authority). One is about
-> recall; the other is about reviewed judgment. The LLM generates the
+> it with *a reviewed, deterministic rule artifact* (extract features →
+> pearl decides → verdict + cited authority). One adds recall to an
+> LLM; the other adds reviewed judgment. The LLM generates the
 > surrounding prose; the pearl makes the call.
+>
+> This demo's pearl is **statute-derived** — every rule is backed by a
+> verbatim quote from 5 U.S.C. § 552(b). LogicPearl also supports
+> **behavior-derived** pearls (distilled from reviewed past decisions
+> in the general case); this repo does the statute-derived variant
+> because FOIA's exemption structure is already codified in the
+> statute itself. See [*Trust boundaries*](#trust-boundaries) for what
+> that means in practice.
 
 **Run date:** 2026-04-14   ·   **Model:** OpenAI gpt-4o, temperature 0   ·   **Corpus:** 5 U.S.C. § 552 + DOJ OIP FOIA Guide (Exemptions 1–9 PDFs) + 28 C.F.R. Part 16
 
