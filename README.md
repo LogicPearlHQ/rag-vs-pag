@@ -28,8 +28,107 @@ is LLM-bounded) and **full-output reproducibility** (only keyword-extract
 PAG achieves 100% byte-identical reruns, because there is no LLM in its
 pipeline to drift).
 
-**Full writeup with prompts, failure modes, captured output, and
-fairness notes:** [`docs/findings.md`](docs/findings.md).
+**Full writeup with prompts, all failure modes, and fairness
+notes:** [`docs/findings.md`](docs/findings.md).
+
+## Correctness and citation faithfulness are two different questions
+
+**Correctness** — did the system's decision match the scenario's gold
+label?
+
+**Citation faithfulness** — does each cited authority actually appear,
+as a real substring, in the source it claims to come from? Auto-checked
+by normalized-substring match against retrieved chunks (RAG) or the
+feature dictionary (PAG).
+
+The two metrics are independent. A system can answer correctly while
+citing excerpts that don't exist anywhere in the source. A system can
+answer wrong while citing everything faithfully. Production audits care
+about both, not just the first. On these 15 scenarios, RAG aced
+correctness (45/45) while **24 of its 94 cited excerpts are not real
+substrings of the retrieved text**. PAG's cites come from a lookup
+table, so every one of them is real by construction.
+
+## What "unfaithful citation" looks like — three real captured examples
+
+Copy-pasted from live RAG runs against the real DOJ FOIA Guide and
+statute corpus.
+
+**1. Ellipsis compression** (scenario 07, LE source). RAG cited as a
+single continuous passage from `5 U.S.C. § 552(b)(7)`:
+
+> *"records or information compiled for law enforcement purposes, but
+> only to the extent that the production of such law enforcement
+> records or information**...** (D) could reasonably be expected to
+> disclose..."*
+
+The `...` silently elides subclauses (A), (B), and (C) — hundreds of
+words of statute text. The stitched-together quote doesn't exist
+verbatim anywhere in the statute.
+
+**2. Plausible fabrication from training data** (scenario 13,
+personnel roster). Cited as `DOJ FOIA Guide, Exemption 6, p. 14`:
+
+> *"Similarly, civilian federal employees who are not involved in law
+> enforcement generally have no expectation of privacy regarding their
+> names, titles, grades, salaries, and duty stations as employees."*
+
+Plausible, on-topic, grammatically clean. Not actually on page 14 of
+the retrieved chunk. The LLM is recalling from its training data (the
+DOJ Guide is public), not quoting the retrieval.
+
+**3. Memory-mixed quote** (scenario 03, tax return). Cited as `DOJ
+FOIA Guide, Exemption 3, p. 40`:
+
+> *"Exemption 3 or return information of other taxpayers. Specifically,
+> section 6103 provides that '[r]eturns and return information shall
+> be confidential,' subject to a number of enumerated exceptions."*
+
+Retrieval actually fetched page 40 — the LLM had real text in context.
+Rather than quote it, the LLM blended retrieved content with remembered
+phrasing into a new "quote" that reads authoritative but isn't a
+substring.
+
+**Common pattern:** all three failures are grammatically clean,
+plausible, and paired with real page numbers. A human reader skimming
+the output wouldn't flag any of them. Only the automated substring
+check catches them.
+
+## Why PAG missed 3 of 45 — and why that's the intended story
+
+Both PAG modes scored 42/45. The 3 misses on each side are **a single
+scenario failing across 3 reruns** (decision determinism at work — the
+same answer every time, wrong or right).
+
+- **PAG-LLM misses scenario 15** (all 3 reruns). The scenario is:
+  *"Summarize the legislative history of FOIA Exemption 5 and the two
+  Supreme Court opinions most responsible for shaping its current
+  scope."* This is a **synthesis task**, not a classification — PAG is
+  for bounded decisions, not for writing paragraphs about legislative
+  history. We deliberately included it to test the boundary. The LLM
+  feature extractor gets fooled because the prompt mentions *"Exemption
+  5"* and confidently sets (b)(5) features TRUE; the pearl then
+  faithfully applies its (b)(5) rule to a record that never existed.
+  **This is by design.** If you drop scenario 15 from the eval,
+  PAG-LLM scores 45/45. We kept it because *"use each tool for what
+  it's for"* is a more honest framing than *"PAG wins everything."*
+  RAG is the right tool for this prompt — and indeed RAG used its
+  `insufficient_context` refusal path on it.
+
+- **PAG-keyword misses scenario 14** (all 3 reruns). The description
+  reads *"...would not reveal a confidential source... would not
+  disclose techniques..."*. The keyword extractor fires on
+  *"confidential source"* and *"disclose techniques"* because
+  substring matching doesn't understand negation. Fixable by widening
+  the `negative_keywords` lists (e.g., add *"would not reveal"*) or
+  by using a negation-aware parser. Not a fundamental ceiling.
+
+The takeaway isn't "PAG would get 45/45 with more effort." The
+takeaway is that PAG's wrongness has a **locatable cause** — a
+scenario that's out of its design scope, or a specific keyword gap we
+can point at and fix. RAG's 24 unfaithful citations are spread across
+scenarios it got *right*, and they have no such locatable cause beyond
+"the LLM wrote plausible text instead of quoting the retrieval."
 
 ## How it works
 
