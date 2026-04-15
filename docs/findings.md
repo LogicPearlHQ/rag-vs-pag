@@ -443,6 +443,112 @@ free (one line of code); the RAG's 100% would be custom scaffolding.
 
 ---
 
+## Klamath: one scenario, four pipelines, four outputs
+
+**The single best piece of evidence in the entire eval**, captured from a
+live run. Same model (gpt-4o, temp=0), same retrieval, same corpus, same
+input description:
+
+> *"A FOIA request seeks the following records: communications between
+> the Department of the Interior and several Indian tribes which, in
+> expressing their views to the Department on certain matters of
+> administrative decisionmaking."*
+
+Gold: **`releasable`**. *Department of the Interior v. Klamath Water Users
+Protective Ass'n*, 532 U.S. 1 (2001). The Supreme Court held that
+communications with tribes are not "inter-agency or intra-agency" for
+purposes of Exemption 5, because the tribes had "their own, albeit
+entirely legitimate, interests in mind" and were "seeking a Government
+benefit."
+
+Retrieval on all LLM-based pipelines returned the same 8 chunks. **None
+of them about Exemption 5** — the ranker pulled 28 C.F.R. admin rules
+and DOJ Guide Exemption 6 pages (privacy interests, unrelated).
+
+### What each pipeline did
+
+**1. RAG (baseline):** `exemption=insufficient_context, confidence=low`.
+Rationale: *"The retrieved excerpts do not provide specific information
+about the applicability of FOIA exemptions to communications between
+the Department of the Interior and Indian tribes... a determination
+cannot be made."* The only pipeline that was honest about retrieval
+failing. Scored "wrong" against gold label, but didn't confabulate.
+
+**2. RAG-ChunkLookup:** `exemption=b5, confidence=high`. Rationale:
+
+> *"Such communications likely fall under the deliberative process
+> privilege, which is protected by Exemption 5 of the FOIA. This
+> exemption covers inter-agency or intra-agency memorandums or letters
+> that are part of the decision-making process..."*
+
+Cited two real chunks — [c7] *DOJ FOIA Guide, Exemption **6**, p. 36*
+and [c8] *DOJ FOIA Guide, Exemption **6**, p. 37* — both about privacy
+interests, neither containing the Exemption 5 doctrine the LLM is
+asserting. **The citations are real. The rationale is LLM-generated
+from training data, not from the retrieval.** The LLM paired a
+confident (b)(5) answer with chunks about (b)(6) and chunk-ID
+indirection made every citation pass the substring check.
+
+**3. PAG (pearl decides + LLM extracts features):** `exemption=b5,
+confidence=deterministic`. The LLM read the description and set
+`inter_or_intra_agency_memo=TRUE, pre_decisional_deliberative=TRUE` —
+both plausible on the face of the text. The pearl's statute-literal
+rule fired `b5`. The pearl did its job correctly on the features it
+was given; **the LLM extractor inherited the same semantic inference
+that Klamath held is wrong.**
+
+**4. PAG-keyword:** `exemption=releasable, confidence=deterministic`.
+The keyword dictionary for `inter_or_intra_agency_memo` contains
+literal patterns like `"inter-agency memo"`, `"intra-agency memo"` —
+none of which match *"communications between the Department of the
+Interior and Indian tribes."* No feature fires. Pearl defaults to
+`releasable`. **Got Klamath's answer by refusing to make the semantic
+inference the LLMs made.**
+
+### What this proves
+
+| Pipeline | Verdict | Citations are real? | Rationale matches cite? | Decision determinism |
+|---|---|---|---|---|
+| RAG (baseline) | wrong (refusal) | 5 of 6 | partially (rationale honest) | LLM (tends stable) |
+| RAG-ChunkLookup | **wrong w/ high confidence** | **100% by construction** | **no** — cites Ex.6; rationale Ex.5 | LLM (tends stable) |
+| PAG | wrong | 100% | yes (same as RAG-ChunkLookup issue at verdict layer) | pearl (byte-identical) |
+| PAG-keyword | **correct** | 0 cites emitted | N/A | pearl (byte-identical) |
+
+Three distinct failure modes visible in one scenario:
+
+1. **Chunk-ID indirection can produce output that *looks* grounded but
+   isn't.** RAG-ChunkLookup's citations are real bytes from real
+   chunks, and those chunks are entirely unrelated to what the LLM
+   wrote in the rationale. "100% citation faithfulness" did not mean
+   "cite supports the answer" — it means "cited bytes exist
+   somewhere."
+
+2. **LLM-extracted features inherit LLM inferences the law has
+   rejected.** The pearl is only as good as the feature vector it
+   gets. If the LLM paraphrases "communications with tribes" as
+   "inter-agency memo," the pearl applies the statute literally and
+   gets the wrong answer — deterministically.
+
+3. **Keyword literalness, which looks like a weakness, is sometimes a
+   safeguard against case-law-contrary LLM inference.** Klamath
+   specifically held that the plain-English inference (tribes =
+   parties = agency-like) is wrong. The keyword extractor, being
+   non-inferential, didn't make the wrong inference and fell through
+   to releasable — which is the Supreme Court's answer.
+
+### Reproduce
+
+Every number and every quoted rationale above is reproducible.
+
+```bash
+uv run python -m rag.rag               scenarios/cases/case_dept_of_interior_v_klamath.json
+uv run python -m rag.rag_chunklookup   scenarios/cases/case_dept_of_interior_v_klamath.json
+uv run python -m pearl.pearl           scenarios/cases/case_dept_of_interior_v_klamath.json
+uv run python -m pearl.pearl           scenarios/cases/case_dept_of_interior_v_klamath.json --extractor keyword
+```
+
+---
+
 ## Limitations
 
 - **Pedagogical corpus.** 11 documents (statute, 9 DOJ Guide chapters, 1
