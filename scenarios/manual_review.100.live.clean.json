@@ -1,0 +1,187 @@
+{
+  "method": "manual_review_of_deterministic_clean_subset_v1",
+  "reviewed_at": "2026-04-17",
+  "source_scenarios": "scenarios/muckrock_snapshot.100.live.clean.json",
+  "source_adjudication": "scenarios/adjudication.100.live.json",
+  "reviewer_notes": "Manual review checked whether the response evidence span supports the mechanical clean bucket and whether the primary exemption is defensible as a single-label gold answer. Review did not inspect system predictions.",
+  "rows": [
+    {
+      "scenario_id": 10872,
+      "manual_status": "approved_clean",
+      "approved_primary": "b8",
+      "acceptable_labels": ["b8"],
+      "rationale": "CFPB states responsive supervision records would be withheld in full under 5 U.S.C. 552(b)(8)."
+    },
+    {
+      "scenario_id": 10873,
+      "manual_status": "approved_clean",
+      "approved_primary": "b8",
+      "acceptable_labels": ["b8"],
+      "rationale": "CFPB states responsive horizontal review records would be withheld in full under 5 U.S.C. 552(b)(8)."
+    },
+    {
+      "scenario_id": 13064,
+      "manual_status": "approved_clean",
+      "approved_primary": "b6",
+      "acceptable_labels": ["b6"],
+      "rationale": "FAA says names in the FOIA log were redacted and withheld under Exemption 6."
+    },
+    {
+      "scenario_id": 14161,
+      "manual_status": "needs_rebucket",
+      "approved_primary": "b4",
+      "acceptable_labels": ["b4"],
+      "recommended_bucket": "ambiguous",
+      "rationale": "The response describes a recommendation to an Initial Denial Authority and says a final decision is still pending, so this is not a clean final application of Exemption 4."
+    },
+    {
+      "scenario_id": 21367,
+      "manual_status": "approved_clean",
+      "approved_primary": "b5",
+      "acceptable_labels": ["b5"],
+      "rationale": "DOE identifies responsive documents and withholds information under Exemption 5 with deliberative-process explanation."
+    },
+    {
+      "scenario_id": 26662,
+      "manual_status": "approved_clean",
+      "approved_primary": "b5",
+      "acceptable_labels": ["b5"],
+      "rationale": "NASA states three pages are withheld in full pursuant to FOIA Exemption 5."
+    },
+    {
+      "scenario_id": 29755,
+      "manual_status": "approved_clean",
+      "approved_primary": "b5",
+      "acceptable_labels": ["b5"],
+      "rationale": "DOJ appeal response says information was properly withheld in full under Exemption 5."
+    },
+    {
+      "scenario_id": 33143,
+      "manual_status": "wrong_primary",
+      "approved_primary": "b5",
+      "acceptable_labels": ["b5", "b6"],
+      "recommended_bucket": "ambiguous",
+      "rationale": "The response cites both Exemption 5 and Exemption 6, with Exemption 5 first. The mechanical primary of b6 is not a defensible single-label clean gold."
+    },
+    {
+      "scenario_id": 62228,
+      "manual_status": "approved_clean",
+      "approved_primary": "b8",
+      "acceptable_labels": ["b8"],
+      "rationale": "FDIC referral response withholds the responsive pages in entirety under Exemption 8."
+    },
+    {
+      "scenario_id": 63644,
+      "manual_status": "approved_clean",
+      "approved_primary": "b3",
+      "acceptable_labels": ["b3"],
+      "rationale": "FinCEN invokes Bank Secrecy Act protections and FOIA Exemption 3 for SAR records."
+    },
+    {
+      "scenario_id": 63648,
+      "manual_status": "approved_clean",
+      "approved_primary": "b3",
+      "acceptable_labels": ["b3"],
+      "rationale": "FinCEN invokes Bank Secrecy Act protections and FOIA Exemption 3 for SAR records."
+    },
+    {
+      "scenario_id": 63656,
+      "manual_status": "approved_clean",
+      "approved_primary": "b3",
+      "acceptable_labels": ["b3"],
+      "rationale": "FinCEN invokes Bank Secrecy Act protections and FOIA Exemption 3 for SAR records."
+    },
+    {
+      "scenario_id": 67193,
+      "manual_status": "approved_clean",
+      "approved_primary": "b3",
+      "acceptable_labels": ["b3"],
+      "rationale": "ATF identifies eTrace/firearms-trace data and states it is exempt under Exemption 3 and a separate statute."
+    },
+    {
+      "scenario_id": 99793,
+      "manual_status": "approved_clean",
+      "approved_primary": "b7",
+      "acceptable_labels": ["b7"],
+      "rationale": "FBI gives a Glomar response tied to a pending investigation and invokes Exemption 7(A)."
+    },
+    {
+      "scenario_id": 102565,
+      "manual_status": "approved_clean",
+      "approved_primary": "b3",
+      "acceptable_labels": ["b3"],
+      "rationale": "FinCEN invokes Bank Secrecy Act protections and FOIA Exemption 3 for SAR-related records."
+    },
+    {
+      "scenario_id": 104856,
+      "manual_status": "approved_clean",
+      "approved_primary": "b3",
+      "acceptable_labels": ["b3"],
+      "rationale": "IRS denies third-party return information under Section 6103 and FOIA Exemption 3."
+    },
+    {
+      "scenario_id": 118656,
+      "manual_status": "needs_rebucket",
+      "approved_primary": "b6",
+      "acceptable_labels": ["b6"],
+      "recommended_bucket": "ambiguous",
+      "rationale": "The response says USTRANSCOM routinely applies Exemption 6 but may apply additional exemptions; it does not cleanly apply B6 to located responsive records."
+    },
+    {
+      "scenario_id": 119663,
+      "manual_status": "approved_clean",
+      "approved_primary": "b6",
+      "acceptable_labels": ["b6"],
+      "rationale": "FCC says personal identifying information in responsive complaints was redacted under Exemption 6."
+    },
+    {
+      "scenario_id": 126349,
+      "manual_status": "approved_clean",
+      "approved_primary": "b6",
+      "acceptable_labels": ["b6"],
+      "rationale": "NIST email says a responsive document is being partially redacted pursuant to FOIA Exemption B6."
+    },
+    {
+      "scenario_id": 148003,
+      "manual_status": "approved_clean",
+      "approved_primary": "b6",
+      "acceptable_labels": ["b6"],
+      "rationale": "Army AvMC states responsive records contain information exempt under 5 U.S.C. 552(b)(6)."
+    },
+    {
+      "scenario_id": 151457,
+      "manual_status": "approved_clean",
+      "approved_primary": "b6",
+      "acceptable_labels": ["b6"],
+      "rationale": "Department of Labor denies access to personal addresses, phone numbers, and personal email addresses under Exemption 6."
+    },
+    {
+      "scenario_id": 156786,
+      "manual_status": "approved_clean",
+      "approved_primary": "b7",
+      "acceptable_labels": ["b7"],
+      "rationale": "FTC gives a Glomar response because confirming records would reveal information exempt under Exemption 7(A)."
+    },
+    {
+      "scenario_id": 174870,
+      "manual_status": "approved_clean",
+      "approved_primary": "b6",
+      "acceptable_labels": ["b6"],
+      "rationale": "TVA says personal information in an enclosed responsive record was redacted under Exemption 6."
+    },
+    {
+      "scenario_id": 176440,
+      "manual_status": "approved_clean",
+      "approved_primary": "b5",
+      "acceptable_labels": ["b5"],
+      "rationale": "FCC says one responsive record is withheld in full under Exemption 5 and explains deliberative-process privilege."
+    },
+    {
+      "scenario_id": 182859,
+      "manual_status": "approved_clean",
+      "approved_primary": "b6",
+      "acceptable_labels": ["b6"],
+      "rationale": "DOE says responsive documents are released with Exemption 6 redactions protecting personal privacy."
+    }
+  ]
+}

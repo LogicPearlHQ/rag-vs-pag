@@ -1,0 +1,18 @@
+{
+  "api": "https://www.muckrock.com/api_v2/",
+  "api_calls": 482,
+  "counts": {
+    "kept": 14,
+    "no_response_comm": 2,
+    "no_substantive_exemption_response": 443,
+    "seen": 459
+  },
+  "limit": 100,
+  "max_requests": 459,
+  "page_size": 50,
+  "retrieved_at": "2026-04-16T20:02:13Z",
+  "sleep": 1.0,
+  "statuses": [
+    "partial"
+  ]
+}

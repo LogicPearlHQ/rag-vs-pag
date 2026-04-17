@@ -1,0 +1,94 @@
+{
+  "ruleset_id": "foia_exemption_ruleset",
+  "version": "v1",
+  "description": "Broad FOIA exemption ruleset for the first demo artifact.",
+  "default": {
+    "verdict": "insufficient_facts",
+    "label": "Insufficient request facts for exemption classification",
+    "authority_ids": []
+  },
+  "rules": [
+    {
+      "id": "b1_classified_national_security",
+      "priority": 10,
+      "label": "Classified national security records",
+      "all": ["request_for_classified_or_national_security_records"],
+      "verdict": "b1",
+      "authority_ids": ["foia_b1"]
+    },
+    {
+      "id": "b2_internal_personnel_rules",
+      "priority": 20,
+      "label": "Internal personnel rules",
+      "all": ["request_for_internal_personnel_rules"],
+      "verdict": "b2",
+      "authority_ids": ["foia_b2"]
+    },
+    {
+      "id": "b3_statutory_withholding",
+      "priority": 30,
+      "label": "Separate withholding statute",
+      "all": ["request_for_statutorily_protected_records"],
+      "verdict": "b3",
+      "authority_ids": ["foia_b3"]
+    },
+    {
+      "id": "b4_confidential_commercial",
+      "priority": 40,
+      "label": "Confidential commercial or financial submissions",
+      "all": ["request_for_confidential_commercial_or_financial_records"],
+      "verdict": "b4",
+      "authority_ids": ["foia_b4"]
+    },
+    {
+      "id": "b5_deliberative_or_privileged",
+      "priority": 50,
+      "label": "Deliberative or privileged intra-agency records",
+      "any": [
+        "request_for_internal_deliberative_email_chain",
+        "request_for_attorney_client_or_work_product_records"
+      ],
+      "verdict": "b5",
+      "authority_ids": ["foia_b5"]
+    },
+    {
+      "id": "b7_law_enforcement_broad",
+      "priority": 60,
+      "label": "Law enforcement records",
+      "any": [
+        "request_for_law_enforcement_investigation_records",
+        "request_for_confidential_source_records",
+        "request_for_investigative_techniques"
+      ],
+      "verdict": "b7",
+      "authority_ids": ["foia_b7"]
+    },
+    {
+      "id": "b6_personnel_or_privacy",
+      "priority": 70,
+      "label": "Personnel, medical, or similar private files",
+      "any": [
+        "request_targets_personnel_roster_or_file",
+        "request_targets_specific_named_individual"
+      ],
+      "verdict": "b6",
+      "authority_ids": ["foia_b6"]
+    },
+    {
+      "id": "b8_financial_supervision",
+      "priority": 80,
+      "label": "Financial institution supervision records",
+      "all": ["request_for_financial_regulatory_records"],
+      "verdict": "b8",
+      "authority_ids": ["foia_b8"]
+    },
+    {
+      "id": "b9_well_data",
+      "priority": 90,
+      "label": "Geological or geophysical well data",
+      "all": ["request_for_geological_or_geophysical_well_data"],
+      "verdict": "b9",
+      "authority_ids": ["foia_b9"]
+    }
+  ]
+}

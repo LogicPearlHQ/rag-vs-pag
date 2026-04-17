@@ -1,0 +1,23 @@
+{
+  "api": "https://www.muckrock.com/api_v2/",
+  "api_calls": 1197,
+  "counts": {
+    "duplicate_prefix": 1,
+    "kept": 40,
+    "no_substantive_exemption_response": 124,
+    "seen": 165
+  },
+  "file_cache": "scenarios/muckrock_file_cache",
+  "include_files": true,
+  "limit": 40,
+  "max_file_pages": 8,
+  "max_files_per_request": 3,
+  "max_requests": 459,
+  "page_size": 25,
+  "retrieved_at": "2026-04-16T21:25:10Z",
+  "sleep": 1.0,
+  "start_page": 1,
+  "statuses": [
+    "partial"
+  ]
+}

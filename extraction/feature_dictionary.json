@@ -1,0 +1,74 @@
+{
+  "request_for_classified_or_national_security_records": {
+    "label": "Classified or national security records",
+    "exemption_hint": "b1"
+  },
+  "request_for_internal_personnel_rules": {
+    "label": "Internal personnel rules or agency practices",
+    "exemption_hint": "b2"
+  },
+  "request_for_statutorily_protected_records": {
+    "label": "Records protected by a separate nondisclosure statute",
+    "exemption_hint": "b3"
+  },
+  "request_for_confidential_commercial_or_financial_records": {
+    "label": "Trade secret, confidential commercial, or financial submissions",
+    "exemption_hint": "b4"
+  },
+  "request_for_contracts_bids_or_procurement_records": {
+    "label": "Contracts, bids, proposals, procurement records, vendor submissions, or pricing records",
+    "exemption_hint": "b4"
+  },
+  "request_for_internal_deliberative_email_chain": {
+    "label": "Internal deliberative communications",
+    "exemption_hint": "b5"
+  },
+  "request_for_attorney_client_or_work_product_records": {
+    "label": "Attorney-client or attorney work product records",
+    "exemption_hint": "b5"
+  },
+  "request_targets_personnel_roster_or_file": {
+    "label": "Personnel, medical, or similar private files",
+    "exemption_hint": "b6"
+  },
+  "request_targets_specific_named_individual": {
+    "label": "Specific named private individual",
+    "exemption_hint": "b6"
+  },
+  "request_for_emails_or_correspondence_about_named_people": {
+    "label": "Emails, messages, correspondence, or communications about named people",
+    "exemption_hint": "b6"
+  },
+  "request_for_law_enforcement_investigation_records": {
+    "label": "Law enforcement investigation records",
+    "exemption_hint": "b7"
+  },
+  "request_for_confidential_source_records": {
+    "label": "Confidential source or informant records",
+    "exemption_hint": "b7"
+  },
+  "request_for_investigative_techniques": {
+    "label": "Investigative techniques or procedures",
+    "exemption_hint": "b7"
+  },
+  "request_for_financial_regulatory_records": {
+    "label": "Financial institution examination or supervision records",
+    "exemption_hint": "b8"
+  },
+  "request_for_suspicious_activity_reports_or_bsa_records": {
+    "label": "Suspicious Activity Reports, SAR data, Bank Secrecy Act reports, or FinCEN protected reports",
+    "exemption_hint": "b3"
+  },
+  "request_for_tax_return_or_irs_return_information": {
+    "label": "Tax returns, IRS return information, taxpayer filings, or forms protected by tax nondisclosure law",
+    "exemption_hint": "b3"
+  },
+  "request_for_grant_application_or_research_proposal": {
+    "label": "Grant applications, research proposals, peer review files, or scientific proposal records",
+    "exemption_hint": "b4"
+  },
+  "request_for_geological_or_geophysical_well_data": {
+    "label": "Geological or geophysical well data",
+    "exemption_hint": "b9"
+  }
+}

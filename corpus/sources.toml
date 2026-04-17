@@ -1,0 +1,38 @@
+# Deterministic local authority fixture used by `make fetch`.
+# The public full benchmark can replace these snippets with fetched PDFs/text
+# while keeping the same manifest shape.
+
+[[source]]
+id = "foia_b1"
+title = "5 U.S.C. 552(b)(1)"
+url = "https://www.law.cornell.edu/uscode/text/5/552"
+
+[[source]]
+id = "foia_b4"
+title = "5 U.S.C. 552(b)(4)"
+url = "https://www.law.cornell.edu/uscode/text/5/552"
+
+[[source]]
+id = "foia_b5"
+title = "5 U.S.C. 552(b)(5)"
+url = "https://www.law.cornell.edu/uscode/text/5/552"
+
+[[source]]
+id = "foia_b6"
+title = "5 U.S.C. 552(b)(6)"
+url = "https://www.law.cornell.edu/uscode/text/5/552"
+
+[[source]]
+id = "foia_b7"
+title = "5 U.S.C. 552(b)(7)"
+url = "https://www.law.cornell.edu/uscode/text/5/552"
+
+[[source]]
+id = "foia_b8"
+title = "5 U.S.C. 552(b)(8)"
+url = "https://www.law.cornell.edu/uscode/text/5/552"
+
+[[source]]
+id = "foia_b9"
+title = "5 U.S.C. 552(b)(9)"
+url = "https://www.law.cornell.edu/uscode/text/5/552"

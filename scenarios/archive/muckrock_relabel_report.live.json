@@ -1,0 +1,152 @@
+{
+  "changed": [
+    {
+      "agency_name": "Department of Energy Headquarters",
+      "id": 21367,
+      "new_all": [
+        "b5"
+      ],
+      "new_primary": "b5",
+      "old_all": [
+        "b5",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "old_primary": "b5"
+    },
+    {
+      "agency_name": "Federal Bureau of Investigation",
+      "id": 29892,
+      "new_all": [
+        "b6",
+        "b7"
+      ],
+      "new_primary": "b6",
+      "old_all": [
+        "b6"
+      ],
+      "old_primary": "b6"
+    },
+    {
+      "agency_name": "Privacy and Civil Liberties Oversight Board",
+      "id": 47285,
+      "new_all": [
+        "b6",
+        "b2",
+        "b1",
+        "b5"
+      ],
+      "new_primary": "b6",
+      "old_all": [
+        "b6",
+        "b2",
+        "b5",
+        "b1"
+      ],
+      "old_primary": "b6"
+    },
+    {
+      "agency_name": "Federal Trade Commission",
+      "id": 156786,
+      "new_all": [
+        "b7"
+      ],
+      "new_primary": "b7",
+      "old_all": [
+        "b7",
+        "b4"
+      ],
+      "old_primary": "b7"
+    },
+    {
+      "agency_name": "Department of Energy Headquarters",
+      "id": 182859,
+      "new_all": [
+        "b6"
+      ],
+      "new_primary": "b6",
+      "old_all": [
+        "b6",
+        "b2",
+        "b3"
+      ],
+      "old_primary": "b6"
+    },
+    {
+      "agency_name": "Food and Drug Administration",
+      "id": 192980,
+      "new_all": [
+        "b3",
+        "b4"
+      ],
+      "new_primary": "b3",
+      "old_all": [
+        "b3",
+        "b4",
+        "b5"
+      ],
+      "old_primary": "b3"
+    }
+  ],
+  "changed_count": 6,
+  "dropped": [
+    {
+      "agency_name": "Navy Personnel Command",
+      "id": 68546,
+      "muckrock_url": "https://www.muckrock.com/foi/henry-mcdonnell-foia-navy-records/",
+      "old_primary": "b6"
+    },
+    {
+      "agency_name": "Department of Justice, Executive Office for Immigration Review",
+      "id": 72945,
+      "muckrock_url": "https://www.muckrock.com/foi/2019-eoir-emails-about-pretermitting-asylum-cases/",
+      "old_primary": "b1"
+    },
+    {
+      "agency_name": "Department of Justice, Executive Office for Immigration Review",
+      "id": 87595,
+      "muckrock_url": "https://www.muckrock.com/foi/2018-charlotte-ij-bia-remands/",
+      "old_primary": "b1"
+    },
+    {
+      "agency_name": "Department of Justice, Executive Office for Immigration Review",
+      "id": 87596,
+      "muckrock_url": "https://www.muckrock.com/foi/2019-charlotte-ij-bia-remands/",
+      "old_primary": "b1"
+    },
+    {
+      "agency_name": "Department of Justice, Executive Office for Immigration Review",
+      "id": 98149,
+      "muckrock_url": "https://www.muckrock.com/foi/angelia-blaikner-emails-on-covid-19-cleaning/",
+      "old_primary": "b6"
+    }
+  ],
+  "dropped_count": 5,
+  "kept_count": 111,
+  "kept_distribution": {
+    "b1": 2,
+    "b2": 1,
+    "b3": 12,
+    "b4": 3,
+    "b5": 19,
+    "b6": 45,
+    "b7": 26,
+    "b8": 3
+  },
+  "note": "Relabelled with context-aware exemption extraction that rejects non-exemption CFR/fee citations such as 28 C.F.R. 16.10(b)(1).",
+  "snapshot_100_count": 100,
+  "snapshot_100_dev_count": 39,
+  "snapshot_100_distribution": {
+    "b1": 2,
+    "b2": 1,
+    "b3": 11,
+    "b4": 3,
+    "b5": 18,
+    "b6": 37,
+    "b7": 25,
+    "b8": 3
+  },
+  "snapshot_100_test_count": 61,
+  "source": "scenarios/muckrock_snapshot.combined.live.json"
+}

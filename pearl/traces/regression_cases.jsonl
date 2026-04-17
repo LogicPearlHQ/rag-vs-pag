@@ -1,0 +1,7 @@
+{"id":"classified","features":{"request_for_classified_or_national_security_records":true},"expected_verdict":"b1","expected_rule_id":"b1_classified_national_security"}
+{"id":"commercial","features":{"request_for_confidential_commercial_or_financial_records":true},"expected_verdict":"b4","expected_rule_id":"b4_confidential_commercial"}
+{"id":"attorney","features":{"request_for_attorney_client_or_work_product_records":true},"expected_verdict":"b5","expected_rule_id":"b5_attorney_privilege"}
+{"id":"law_privacy","features":{"request_for_law_enforcement_investigation_records":true,"request_targets_specific_named_individual":true},"expected_verdict":"b6","expected_rule_id":"b6_personnel_or_privacy"}
+{"id":"informant","features":{"request_for_law_enforcement_investigation_records":true,"request_for_confidential_source_records":true},"expected_verdict":"b7","expected_rule_id":"b7d_confidential_source"}
+{"id":"financial_supervision","features":{"request_for_financial_regulatory_records":true},"expected_verdict":"b8","expected_rule_id":"b8_financial_supervision"}
+{"id":"well_data","features":{"request_for_geological_or_geophysical_well_data":true},"expected_verdict":"b9","expected_rule_id":"b9_well_data"}

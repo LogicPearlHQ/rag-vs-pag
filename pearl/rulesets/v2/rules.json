@@ -1,0 +1,178 @@
+{
+  "ruleset_id": "foia_exemption_ruleset",
+  "version": "v2",
+  "description": "More inspectable FOIA exemption ruleset with split b7 subrules.",
+  "default": {
+    "verdict": "insufficient_facts",
+    "label": "Insufficient request facts for exemption classification",
+    "authority_ids": []
+  },
+  "rules": [
+    {
+      "id": "b1_classified_national_security",
+      "priority": 10,
+      "label": "Classified national security records",
+      "all": ["request_for_classified_or_national_security_records"],
+      "verdict": "b1",
+      "authority_ids": ["foia_b1"]
+    },
+    {
+      "id": "b2_internal_personnel_rules",
+      "priority": 20,
+      "label": "Internal personnel rules",
+      "all": ["request_for_internal_personnel_rules"],
+      "verdict": "b2",
+      "authority_ids": ["foia_b2"]
+    },
+    {
+      "id": "b3_statutory_withholding",
+      "priority": 30,
+      "label": "Separate withholding statute",
+      "all": ["request_for_statutorily_protected_records"],
+      "verdict": "b3",
+      "authority_ids": ["foia_b3"]
+    },
+    {
+      "id": "b4_confidential_commercial",
+      "priority": 42,
+      "label": "Confidential commercial or financial submissions",
+      "all": ["request_for_confidential_commercial_or_financial_records"],
+      "verdict": "b4",
+      "authority_ids": ["foia_b4"]
+    },
+    {
+      "id": "b4_contracts_procurement",
+      "priority": 43,
+      "label": "Contracts, bids, proposals, procurement records, or pricing records",
+      "any": [
+        "request_for_contracts_bids_or_procurement_records",
+        "request_for_grant_application_or_research_proposal"
+      ],
+      "verdict": "b4",
+      "authority_ids": ["foia_b4"]
+    },
+    {
+      "id": "b3_suspicious_activity_reports",
+      "priority": 31,
+      "label": "Suspicious Activity Reports or Bank Secrecy Act protected records",
+      "all": ["request_for_suspicious_activity_reports_or_bsa_records"],
+      "verdict": "b3",
+      "authority_ids": ["foia_b3"]
+    },
+    {
+      "id": "b3_tax_return_information",
+      "priority": 32,
+      "label": "Tax return or IRS return information",
+      "all": ["request_for_tax_return_or_irs_return_information"],
+      "verdict": "b3",
+      "authority_ids": ["foia_b3"]
+    },
+    {
+      "id": "b5_attorney_privilege",
+      "priority": 50,
+      "label": "Attorney-client or attorney work product records",
+      "all": ["request_for_attorney_client_or_work_product_records"],
+      "verdict": "b5",
+      "authority_ids": ["foia_b5"]
+    },
+    {
+      "id": "b5_deliberative_process",
+      "priority": 51,
+      "label": "Internal deliberative records",
+      "all": ["request_for_internal_deliberative_email_chain"],
+      "verdict": "b5",
+      "authority_ids": ["foia_b5"]
+    },
+    {
+      "id": "b7d_confidential_source",
+      "priority": 60,
+      "label": "Law enforcement confidential source records",
+      "all": [
+        "request_for_law_enforcement_investigation_records",
+        "request_for_confidential_source_records"
+      ],
+      "verdict": "b7",
+      "authority_ids": ["foia_b7"]
+    },
+    {
+      "id": "b7e_investigative_techniques",
+      "priority": 61,
+      "label": "Law enforcement investigative techniques",
+      "all": [
+        "request_for_law_enforcement_investigation_records",
+        "request_for_investigative_techniques"
+      ],
+      "verdict": "b7",
+      "authority_ids": ["foia_b7"]
+    },
+    {
+      "id": "b7c_law_enforcement_privacy",
+      "priority": 62,
+      "label": "Law enforcement records about a named private individual",
+      "all": [
+        "request_for_law_enforcement_investigation_records",
+        "request_targets_specific_named_individual"
+      ],
+      "verdict": "b7",
+      "authority_ids": ["foia_b7", "foia_b6"]
+    },
+    {
+      "id": "b7_law_enforcement_general",
+      "priority": 63,
+      "label": "Law enforcement records",
+      "all": ["request_for_law_enforcement_investigation_records"],
+      "verdict": "b7",
+      "authority_ids": ["foia_b7"]
+    },
+    {
+      "id": "b6_personnel_or_privacy",
+      "priority": 59,
+      "label": "Personnel, medical, or similar private files",
+      "any": [
+        "request_targets_personnel_roster_or_file",
+        "request_targets_specific_named_individual"
+      ],
+      "verdict": "b6",
+      "authority_ids": ["foia_b6"]
+    },
+    {
+      "id": "b6_correspondence_about_people",
+      "priority": 69,
+      "label": "Correspondence or messages about people without a stronger exemption-shaped record category",
+      "all": ["request_for_emails_or_correspondence_about_named_people"],
+      "none": [
+        "request_for_classified_or_national_security_records",
+        "request_for_internal_personnel_rules",
+        "request_for_statutorily_protected_records",
+        "request_for_suspicious_activity_reports_or_bsa_records",
+        "request_for_tax_return_or_irs_return_information",
+        "request_for_confidential_commercial_or_financial_records",
+        "request_for_contracts_bids_or_procurement_records",
+        "request_for_grant_application_or_research_proposal",
+        "request_for_internal_deliberative_email_chain",
+        "request_for_attorney_client_or_work_product_records",
+        "request_for_law_enforcement_investigation_records",
+        "request_for_financial_regulatory_records",
+        "request_for_geological_or_geophysical_well_data"
+      ],
+      "verdict": "b6",
+      "authority_ids": ["foia_b6"]
+    },
+    {
+      "id": "b8_financial_supervision",
+      "priority": 35,
+      "label": "Financial institution supervision records",
+      "all": ["request_for_financial_regulatory_records"],
+      "verdict": "b8",
+      "authority_ids": ["foia_b8"]
+    },
+    {
+      "id": "b9_well_data",
+      "priority": 90,
+      "label": "Geological or geophysical well data",
+      "all": ["request_for_geological_or_geophysical_well_data"],
+      "verdict": "b9",
+      "authority_ids": ["foia_b9"]
+    }
+  ]
+}

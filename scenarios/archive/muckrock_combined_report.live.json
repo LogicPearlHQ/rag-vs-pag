@@ -1,0 +1,52 @@
+{
+  "all_exemption_distribution": {
+    "b1": 5,
+    "b2": 1,
+    "b3": 12,
+    "b4": 3,
+    "b5": 19,
+    "b6": 47,
+    "b7": 26,
+    "b8": 3
+  },
+  "all_response_source_distribution": {
+    "communication_text": 26,
+    "file_pdf_text": 90
+  },
+  "all_status_distribution": {
+    "partial": 46,
+    "rejected": 70
+  },
+  "combined_dev_count": 46,
+  "combined_test_count": 70,
+  "note": "Merged live scrape. PDF records were accepted only after truncating standard exemption appendices and requiring denial/withholding cues. The 100-record snapshot is a deterministic random sample with rare exemption labels preserved.",
+  "record_count_all": 116,
+  "record_count_snapshot_100": 100,
+  "snapshot_100_dev_count": 39,
+  "snapshot_100_exemption_distribution": {
+    "b1": 5,
+    "b2": 1,
+    "b3": 11,
+    "b4": 3,
+    "b5": 15,
+    "b6": 39,
+    "b7": 23,
+    "b8": 3
+  },
+  "snapshot_100_response_source_distribution": {
+    "communication_text": 23,
+    "file_pdf_text": 77
+  },
+  "snapshot_100_status_distribution": {
+    "partial": 39,
+    "rejected": 61
+  },
+  "snapshot_100_test_count": 61,
+  "source_files": [
+    "scenarios/muckrock_snapshot.live.json",
+    "scenarios/muckrock_snapshot.partial.live.json",
+    "scenarios/muckrock_snapshot.pdfpilot.live.json",
+    "scenarios/muckrock_snapshot.rejected_pdf.live.json",
+    "scenarios/muckrock_snapshot.partial_pdf.live.json"
+  ]
+}
