@@ -1,17 +1,17 @@
 # RAG vs. PAG
-*Retrieval Augmented Generation vs. Pearl Augmented Generation*
+*Retrieval-Augmented Generation vs. Policy-Augmented Generation*
 
 ![RAG vs PAG decision flow](docs/assets/rag-vs-pag-overview.svg)
 
 **TLDR:**
 
 Maybe LLMs should read messy inputs, but not make the final governed decision.
-After comparing normal RAG, chunk-lookup RAG, and what I'll refer to as PAG
-(I hate naming things), PAG did better on the reported metrics in this benchmark.
+After comparing normal RAG, chunk-lookup RAG, and Policy-Augmented Generation
+(PAG), PAG did better on the reported metrics in this benchmark.
 The interesting thing is not that the LLM made up fake citations. It didn't.
 The more interesting failure mode is that even chunk-based RAG often used real
 citations incorrectly: it fetched the wrong citation to support its decision.
-The pearl-based method makes the final decision from a rule trace instead of
+The policy-artifact method makes the final decision from a rule trace instead of
 letting the model choose the final citation. It's also easier to inspect,
 rerun, diff, and regression-test.
 
@@ -21,8 +21,10 @@ bytes, and the compiled LogicPearl artifact JSON is `2,014` bytes. Using
 prompts generated for the live test split were about `576-585` tokens at the
 median and up to `3,869` tokens for the largest case, before any output tokens.
 
-> (A "pearl" is the best way I have found to describe a deterministic rules
-> artifact, I've open sourced it as [LogicPearl](https://github.com/LogicPearlHQ/logicpearl), but TLDR it's a CLI tool that produces a
+> In this repo, LogicPearl supplies the policy artifact. A "pearl" is the best
+> way I have found to describe a deterministic rules artifact, and I've open
+> sourced it as [LogicPearl](https://github.com/LogicPearlHQ/logicpearl). TLDR:
+> it's a CLI tool that produces a
 > deterministic runnable artifact
 > that's automatically generated from traces via decision trees + solver +
 > misc.)
@@ -36,7 +38,7 @@ uses 0 tokens for the final decision, and can be regression tested? (I think so 
 For testing, I went with (USA) [FOIA](https://www.foia.gov/) (Freedom of Information Act) exemption classification.
 I chose that because it's a legal-ish question, and it's a great example of where hallucinations or incorrect citations are probably not acceptable.
 
-All of the input data for this I pulled from [MuckRock](https://www.muckrock.com/) (this site is amazing, I had no idea prior to this that it existed, they have a lot of solid government datasets).  Specifically I grabbed FOIA request/response records. The benchmark here compares ordinary RAG-style LLM answers against a "pearl" pipeline where the LLM extracts structured
+All of the input data for this I pulled from [MuckRock](https://www.muckrock.com/) (this site is amazing, I had no idea prior to this that it existed, they have a lot of solid government datasets).  Specifically I grabbed FOIA request/response records. The benchmark here compares ordinary RAG-style LLM answers against a policy-artifact pipeline where the LLM extracts structured
 facts, then a deterministic decision artifact chooses the final label.  I also do another comparison with RAG + Chunk Lookup, which is more fair because plain RAG on its own was worse than I expected.
 
 Also I am not claiming to solve "FOIA law.", I don't have the legal knowledge
@@ -79,7 +81,7 @@ from stored chunks. But it still does not prove the model picked the correct
 chunk, and plain RAG can still write quote text itself.
 
 This repo is meant to show that, and how to fix it (or my way of fixing it at least).
-The thing that I think makes this unique is a "pearl" decision can
+The thing that I think makes this unique is that a policy-artifact decision can
 be easily tied to:
 
 - the extracted feature dictionary;
@@ -93,9 +95,11 @@ That does not make the answer legally correct by magic. It makes the decision
 path easier to inspect, rerun, and challenge.  (Yes you CAN audit from an LLM what
 citation is cited, but you can't determine WHY it cited that)
 
-## What The Pearl Rules Look Like
+## What The Policy Rules Look Like
 
-The "pearl" path is not a prompt.  It's an auto generated ruleset (Which is what you would version control, look under [`pearl/rulesets/v2/rules.json`](pearl/rulesets/v2/rules.json).
+The policy-artifact path is not a prompt. It's an auto-generated ruleset,
+which is what you would version control. See
+[`pearl/rulesets/v2/rules.json`](pearl/rulesets/v2/rules.json).
 
 The part I think that is most helpful:
 
@@ -143,7 +147,7 @@ last step is generated text versus a governed decision artifact?
 ## Results
 
 The strongest result is about auditability, not broad legal
-accuracy. Under shared extracted facts, the pearl produces stable,
+accuracy. Under shared extracted facts, the policy artifact produces stable,
 inspectable, trace-valid decisions. The generated baselines are harder to
 audit even when they cite text.
 
