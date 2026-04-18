@@ -15,6 +15,12 @@ The pearl-based method makes the final decision from a rule trace instead of
 letting the model choose the final citation. It's also easier to inspect,
 rerun, diff, and regression-test.
 
+Scale check: the v2 source ruleset that makes the final decision is `5,959`
+bytes, and the compiled LogicPearl artifact JSON is `2,014` bytes. Using
+`tiktoken` with the `gpt-4o-mini` encoding, the RAG and ChunkLookup input
+prompts generated for the live test split were about `576-585` tokens at the
+median and up to `3,869` tokens for the largest case, before any output tokens.
+
 > (A "pearl" is the best way I have found to describe a deterministic rules
 > artifact, I've open sourced it as [LogicPearl](https://github.com/LogicPearlHQ/logicpearl), but TLDR it's a CLI tool that produces a
 > deterministic runnable artifact
@@ -86,6 +92,41 @@ be easily tied to:
 That does not make the answer legally correct by magic. It makes the decision
 path easier to inspect, rerun, and challenge.  (Yes you CAN audit from an LLM what
 citation is cited, but you can't determine WHY it cited that)
+
+## What The Pearl Rules Look Like
+
+The "pearl" path is not a prompt.  It's an auto generated ruleset (Which is what you would version control, look under [`pearl/rulesets/v2/rules.json`](pearl/rulesets/v2/rules.json).
+
+The part I think that is most helpful:
+
+- `priority` makes conflicts explicit. For example, `b4_contracts_procurement`
+  has priority `43`, right after the broader confidential-commercial rule.
+- `all`, `any`, and `none` encode boolean constraints directly. The
+  `b6_correspondence_about_people` rule only fires for correspondence about
+  people when stronger exemption-shaped categories are absent.
+- `verdict` is machine-readable (`b6`), while `label` is human-readable
+  (`Correspondence or messages about people...`).
+
+Small excerpt:
+
+```json
+{
+  "id": "b6_correspondence_about_people",
+  "priority": 69,
+  "label": "Correspondence or messages about people without a stronger exemption-shaped record category",
+  "all": ["request_for_emails_or_correspondence_about_named_people"],
+  "none": [
+    "request_for_classified_or_national_security_records",
+    "request_for_statutorily_protected_records",
+    "request_for_law_enforcement_investigation_records",
+    "request_for_financial_regulatory_records"
+  ],
+  "verdict": "b6",
+  "authority_ids": ["foia_b6"]
+}
+```
+
+That kind of "none of the stronger categories apply" guard is a good example of why executable logic is a better fit than hoping the LLM generated answer gets right every time.
 
 ## How To Read The Tracks
 
@@ -209,6 +250,18 @@ You need Python 3.11+, `uv`, and an OpenAI API key for the full benchmark.
 uv sync --extra dev
 export OPENAI_API_KEY=...
 uv run make final-report
+```
+
+For a direct head-to-head run over the live benchmark:
+
+```bash
+uv run make demo-live
+```
+
+For a small generated walkthrough of individual cases:
+
+```bash
+uv run make trace-viewer
 ```
 
 The default model is `gpt-4o-mini`. You can choose a different model:
